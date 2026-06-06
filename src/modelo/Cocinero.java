@@ -32,8 +32,7 @@ public class Cocinero extends Empleado {
 
 	//@Override
 	public double calcularSueldo() {
-		return 20; // solo para que no de error 
 
-		//return Sistema.SUELDO_BASE + plusCategoria;
+		return Constantes.SUELDO_BASE + plusCategoria;
 	}
 }
