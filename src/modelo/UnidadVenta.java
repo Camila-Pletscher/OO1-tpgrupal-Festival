@@ -67,6 +67,11 @@ public abstract class UnidadVenta {
 		this.platos = platos;
 	}
 	
+	public double calcularRecaudacion(int festivalId) {
+		//TODO 
+		return 0; 
+	}
+	
 	@Override
 	public String toString() {
 		return "UnidadVenda: [Nombre Comercial: "+this.getNombreComercial()+
