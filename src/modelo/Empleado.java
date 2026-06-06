@@ -78,19 +78,9 @@ public abstract class Empleado {
 		return Objects.hash(apellido, dni, fechaIngreso, fechaNacimiento, id, nombre);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Empleado other = (Empleado) obj;
-		return Objects.equals(apellido, other.apellido) && Objects.equals(dni, other.dni)
-				&& Objects.equals(fechaIngreso, other.fechaIngreso)
-				&& Objects.equals(fechaNacimiento, other.fechaNacimiento) && id == other.id
-				&& Objects.equals(nombre, other.nombre);
+	public boolean equals(Empleado empleado)
+	{
+	    return this.dni.equals(empleado.getDni());
 	}
 	
 	

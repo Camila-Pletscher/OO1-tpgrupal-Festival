@@ -50,6 +50,11 @@ public class Plato {
 				", precioVenta=" + precioVenta +
 				", costoProduccion=" + costoProduccion + "]";
 	}
+	
+	public boolean equals(Plato plato)
+	{
+	    return this.id == plato.getId();
+	}
 
 
 

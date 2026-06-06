@@ -77,4 +77,9 @@ public abstract class UnidadVenta {
 				" | Platos: "+ this.getPlatos().toString();
 	}
 	public abstract double calcularCanon();
+	
+	public boolean equals(UnidadVenta unidad)
+	{
+	    return this.codigo.equals(unidad.getCodigo());
+	}
 }
