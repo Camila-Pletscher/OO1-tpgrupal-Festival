@@ -56,8 +56,7 @@ public abstract class Empleado {
 
 	public int calcularAntiguedad() {
 
-		return Period.between(fechaIngreso, LocalDate.now())
-				.getYears();
+		return Period.between(fechaIngreso, LocalDate.now()).getYears();
 	}
 
 	//METODO ABSTRACTO

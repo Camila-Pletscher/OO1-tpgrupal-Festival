@@ -8,12 +8,6 @@ import modelo.Festival;
 
 public class Sistema {
 
-	//CONSTANTES DEL SISTEMA 
-	public static final double SUELDO_BASE = 100000;
-	public static final double COSTO_POR_M2 = 500;
-	public static final double COSTO_POR_MONTAJE_POR_MIN = 10;
-	public static final double PLUS_ELECTRICIDAD = 2000;
-	public static final double PLUS_ANTIGUEDAD_POR_ANIO = 5000;
 	
 	List<Festival> lstFestivales;
 	List<Empleado> lstEmpleados;
@@ -182,17 +176,78 @@ public class Sistema {
 	
 
 	//EMPLEADO
-	public Empleado agregarEmpleado(Empleado empleado)
-	        throws Exception
-	{
-	    if(buscarEmpleadoPorDni(empleado.getDni()) != null)
-	    {
-	        throw new Exception("Empleado ya registrado");
-	    }
+	public boolean agregarCajero(
+			String nombre,
+			String apellido,
+			String dni,
+			LocalDate fechaNacimiento,
+			LocalDate fechaIngreso,
+			Turno turno) throws Exception {
 
-	    lstEmpleados.add(empleado);
+		boolean agregado = false;
 
-	    return empleado;
+		if(buscarEmpleadoPorDni(dni) != null) {
+			throw new Exception("El empleado ya existe");
+		}
+
+		int id;
+
+		if(lstEmpleados.isEmpty()) {
+			id = 1;
+		}else {
+			id = lstEmpleados.get(lstEmpleados.size()-1).getId() + 1;
+		}
+
+		Cajero nuevo = new Cajero(
+				id,
+				nombre,
+				apellido,
+				dni,
+				fechaNacimiento,
+				fechaIngreso,
+				turno);
+
+		agregado = lstEmpleados.add(nuevo);
+
+		return agregado;
+	}
+	
+	public boolean agregarCocinero(
+			String nombre,
+			String apellido,
+			String dni,
+			LocalDate fechaNacimiento,
+			LocalDate fechaIngreso,
+			String especialidad,
+			double plusCategoria) throws Exception {
+
+		boolean agregado = false;
+
+		if(buscarEmpleadoPorDni(dni) != null) {
+			throw new Exception("El empleado ya existe");
+		}
+
+		int id;
+
+		if(lstEmpleados.isEmpty()) {
+			id = 1;
+		}else {
+			id = lstEmpleados.get(lstEmpleados.size()-1).getId() + 1;
+		}
+
+		Cocinero nuevo = new Cocinero(
+				id,
+				nombre,
+				apellido,
+				dni,
+				fechaNacimiento,
+				fechaIngreso,
+				especialidad,
+				plusCategoria);
+
+		agregado = lstEmpleados.add(nuevo);
+
+		return agregado;
 	}
 	
 	public boolean eliminarEmpleado(String dni)

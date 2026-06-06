@@ -25,7 +25,6 @@ public class Cajero extends Empleado {
 
 	@Override
 	public double calcularSueldo() {
-		return 20; //solo para no de error
-		//return Sistema.SUELDO_BASE +(calcularAntiguedad() * Sistema.PLUS_ANTIGUEDAD_POR_ANIO);
+		return Constantes.SUELDO_BASE +(calcularAntiguedad() * Constantes.PLUS_ANTIGUEDAD_POR_ANIO);
 	}
 }
