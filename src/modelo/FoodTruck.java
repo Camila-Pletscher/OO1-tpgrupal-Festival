@@ -34,7 +34,13 @@ public class FoodTruck extends UnidadVenta{
 	
 	@Override
 	public double calcularCanon() {
-		//TODO 
-		return 0;
+		double canon = this.superficie * Sistema.COSTO_POR_M2;
+
+	    if(this.requiereElectricidad)
+	    {
+	        canon += Sistema.PLUS_ELECTRICIDAD;
+	    }
+
+	    return canon;
 	}
 }

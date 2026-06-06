@@ -37,7 +37,8 @@ public class PuestoDesarmable extends UnidadVenta {
 	
 	@Override
 	public double calcularCanon() {
-		// TODO
-		return 0; 
+		return (this.superficie * Sistema.COSTO_POR_M2)
+	            -
+	           (this.tiempoMontaje * Sistema.COSTO_POR_MONTAJE_POR_MIN); 
 	}
 }

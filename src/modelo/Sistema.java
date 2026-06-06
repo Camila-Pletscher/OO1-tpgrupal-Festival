@@ -8,6 +8,13 @@ import modelo.Festival;
 
 public class Sistema {
 
+	//CONSTANTES DEL SISTEMA 
+	public static final double SUELDO_BASE = 100000;
+	public static final double COSTO_POR_M2 = 500;
+	public static final double COSTO_POR_MONTAJE_POR_MIN = 10;
+	public static final double PLUS_ELECTRICIDAD = 2000;
+	public static final double PLUS_ANTIGUEDAD_POR_ANIO = 5000;
+	
 	List<Festival> lstFestivales;
 	List<Empleado> lstEmpleados;
 	List<UnidadVenta> lstUnidadVenta;
@@ -21,54 +28,17 @@ public class Sistema {
 	}
 
 
-
-
 	public List<Festival> getLstFestivales() {
 		return lstFestivales;
 	}
-
-
-
-
-	public void setLstFestivales(List<Festival> lstFestivales) {
-		this.lstFestivales = lstFestivales;
-	}
-
-
-
 
 	public List<Empleado> getLstEmpleados() {
 		return lstEmpleados;
 	}
 
-
-
-
-	public void setLstEmpleados(List<Empleado> lstEmpleados) {
-		this.lstEmpleados = lstEmpleados;
-	}
-
-
-
-
 	public List<UnidadVenta> getLstUnidadVenta() {
 		return lstUnidadVenta;
 	}
-
-
-
-
-	public void setLstUnidadVenta(List<UnidadVenta> lstUnidadVenta) {
-		this.lstUnidadVenta = lstUnidadVenta;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	//FESTIVAL
 	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin, List<Costo> costos) throws Exception
@@ -80,24 +50,29 @@ public class Sistema {
 		
 		int id= lstFestivales.isEmpty()?1: lstFestivales.get(lstFestivales.size()-1).getId()+1;
 		Festival nuevo = new Festival(id,nombre,temporada,fechaInicio,fechaFin, costos);
+		lstFestivales.add(nuevo);
 		return nuevo;
 	}
 	
 	
 	public boolean eliminarFestival(int id)
 	{
-		boolean eliminado=false;
-		int i=0;
-		while(i<lstEmpleados.size() && eliminado==false)
+	    boolean eliminado = false;
+
+	    int i = 0;
+
+	    while(i < lstFestivales.size() && !eliminado)
 	    {
-			  if(lstEmpleados.get(i).getId() == id)
-			  {
-			      lstEmpleados.remove(i);
-			      eliminado = true;
-			  }
-			  i++;    
-		}
-		return eliminado;
+	        if(lstFestivales.get(i).getId() == id)
+	        {
+	            lstFestivales.remove(i);
+	            eliminado = true;
+	        }
+
+	        i++;
+	    }
+
+	    return eliminado;
 	}
 	
 	
@@ -111,7 +86,8 @@ public class Sistema {
 			
 			if(lstFestivales.get(i).getNombre().equals(nombre))
 			{	
-					
+				f = lstFestivales.get(i);
+
 			}
 			i++;
 	    }
@@ -119,28 +95,54 @@ public class Sistema {
 	}
 
 	
-
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	//UNIDAD
-	public UnidadVenta agregarUnidad(UnidadVenta u) throws Exception
-	{
-		if(buscarUnidadPorCodigo(u.getCodigo())!=null)
-		{
-			throw new Exception("El Empleado ya esta ingresado");
+	public boolean agregarFoodTruck(String nombreComercial,	Empleado responsable, double superficie,String codigo,String patente,boolean requiereElectricidad) throws Exception {
+
+		boolean agregado = false;
+
+		if(buscarUnidadPorCodigo(codigo) != null) {
+			throw new Exception("Ya existe una unidad con ese código");
 		}
-		
-		int id= lstUnidadVenta.isEmpty()?1: lstUnidadVenta.get(lstUnidadVenta.size()-1).getId()+1;
-		UnidadVenta nueva = new UnidadVenta(id,u.getNombreComercial(),u.getResponsable(),u.getSuperficie(),u.getCodigo(),u.getResponsable(),u.getPersonal(),u.getPlatos());
-		return nueva;
+
+		int id;
+
+		if(lstUnidadVenta.isEmpty()) {
+			id = 1;
+		}else {
+			id = lstUnidadVenta.get(lstUnidadVenta.size()-1).getId() + 1;
+		}
+
+		FoodTruck nuevo = new FoodTruck(id,nombreComercial,responsable,	superficie,	codigo,	patente,requiereElectricidad);
+
+		agregado = lstUnidadVenta.add(nuevo);
+
+		return agregado;
 	}
+	
+	public boolean agregarPuestoDesarmable(	String nombreComercial,	Empleado responsable,double superficie,	String codigo,int cantidadCarpas,	int tiempoMontaje) throws Exception {
+
+		boolean agregado = false;
+
+		if(buscarUnidadPorCodigo(codigo) != null) {
+			throw new Exception("Ya existe una unidad con ese código");
+		}
+
+		int id;
+
+		if(lstUnidadVenta.isEmpty()) {
+			id = 1;
+		}else {
+			id = lstUnidadVenta.get(lstUnidadVenta.size()-1).getId() + 1;
+		}
+
+		PuestoDesarmable nuevo = new PuestoDesarmable(id,nombreComercial,responsable,superficie,codigo,	cantidadCarpas,	tiempoMontaje);
+
+		agregado = lstUnidadVenta.add(nuevo);
+
+		return agregado;
+	}
+	
 	
 	
 	public boolean eliminarUnidadVenta(String codigo)
@@ -164,7 +166,7 @@ public class Sistema {
 	{
 		UnidadVenta uv = null;
 		int i=0;
-		while(i<lstFestivales.size() && uv==null)
+		while(i<lstUnidadVenta.size() && uv==null)
 	    {
 			
 			if(lstUnidadVenta.get(i).getCodigo().equals(codigo))
@@ -178,33 +180,19 @@ public class Sistema {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	//EMPLEADO
-	public Empleado agregarEmpleado(String nombre, String apellido,String dni,LocalDate fechaNacimiento, LocalDate fechaIngreso) throws Exception
+	public Empleado agregarEmpleado(Empleado empleado)
+	        throws Exception
 	{
-		if(buscarEmpleadoPorDni(dni)!=null)
-		{
-			throw new Exception("El Empleado ya esta ingresado");
-		}
-		
-		int id= lstEmpleados.isEmpty()?1: lstEmpleados.get(lstEmpleados.size()-1).getId()+1;
-		Empleado nuevo = new Empleado(id,nombre,apellido,dni,fechaNacimiento,fechaIngreso);
-		return nuevo;
+	    if(buscarEmpleadoPorDni(empleado.getDni()) != null)
+	    {
+	        throw new Exception("Empleado ya registrado");
+	    }
+
+	    lstEmpleados.add(empleado);
+
+	    return empleado;
 	}
 	
 	public boolean eliminarEmpleado(String dni)
