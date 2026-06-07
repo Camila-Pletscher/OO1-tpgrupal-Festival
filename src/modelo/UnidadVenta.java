@@ -72,9 +72,19 @@ public abstract class UnidadVenta {
 		return this.pedidos;
 	}
 
-	public double calcularRecaudacion(int festivalId) {
-		//TODO 
-		return 0; 
+	public double calcularRecaudacion(int festivalId)
+	{
+	    double total = 0;
+
+	    for(Pedido pedido : pedidos)
+	    {
+	        if(pedido.getFestival().getId() == festivalId)
+	        {
+	            total += pedido.calcularTotal();
+	        }
+	    }
+
+	    return total;
 	}
 	
 	@Override

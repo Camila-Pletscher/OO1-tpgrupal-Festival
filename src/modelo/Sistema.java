@@ -175,13 +175,7 @@ public class Sistema {
 	
 
 	//EMPLEADO
-	public boolean agregarCajero(
-			String nombre,
-			String apellido,
-			String dni,
-			LocalDate fechaNacimiento,
-			LocalDate fechaIngreso,
-			Turno turno) throws Exception {
+	public boolean agregarCajero(String nombre,	String apellido,String dni,	LocalDate fechaNacimiento,LocalDate fechaIngreso,Turno turno) throws Exception {
 
 		boolean agregado = false;
 
@@ -197,34 +191,21 @@ public class Sistema {
 			id = lstEmpleados.get(lstEmpleados.size()-1).getId() + 1;
 		}
 
-		Cajero nuevo = new Cajero(
-				id,
-				nombre,
-				apellido,
-				dni,
-				fechaNacimiento,
-				fechaIngreso,
-				turno);
+		Cajero nuevo = new Cajero(id,nombre,apellido,dni,fechaNacimiento,fechaIngreso,turno);
 
 		agregado = lstEmpleados.add(nuevo);
 
 		return agregado;
 	}
 	
-	public boolean agregarCocinero(
-			String nombre,
-			String apellido,
-			String dni,
-			LocalDate fechaNacimiento,
-			LocalDate fechaIngreso,
-			String especialidad,
-			double plusCategoria) throws Exception {
+	public boolean agregarCocinero(	String nombre,String apellido,String dni,LocalDate fechaNacimiento,	LocalDate fechaIngreso,	String especialidad,double plusCategoria) throws Exception {
 
 		boolean agregado = false;
 
 		if(buscarEmpleadoPorDni(dni) != null) {
 			throw new Exception("El empleado ya existe");
 		}
+		
 
 		int id;
 
@@ -234,16 +215,7 @@ public class Sistema {
 			id = lstEmpleados.get(lstEmpleados.size()-1).getId() + 1;
 		}
 
-		Cocinero nuevo = new Cocinero(
-				id,
-				nombre,
-				apellido,
-				dni,
-				fechaNacimiento,
-				fechaIngreso,
-				especialidad,
-				plusCategoria);
-
+		Cocinero nuevo = new Cocinero(id,nombre,apellido,dni,fechaNacimiento,fechaIngreso,especialidad,	plusCategoria);
 		agregado = lstEmpleados.add(nuevo);
 
 		return agregado;
@@ -298,7 +270,7 @@ public class Sistema {
 		}else {
 			id = unidad.getPedidos().get(unidad.getPedidos().size()-1).getId()+1;
 		}
-		return unidad.getPedidos().add(new Pedido(id,fecha,items));
+		return unidad.getPedidos().add(new Pedido(id,fecha, festival, items));
 	}
 	
 
@@ -306,26 +278,26 @@ public class Sistema {
 	
 	
 	
-	/*
-	Reporte de Recaudación: Dado un festival, 
-	retornar la lista de unidades y su recaudación total (usar clase ReporteVenta, no persistente). 
-	
 	public List<ReporteVenta> reporteRecaudacion(int festivalId)
 	{
-		List<ReporteVenta> reportesEncontrados = new ArrayList<ReporteVenta>();
-		int i=0;
-		while(i<lstFestivales.size())
-		{
-			if(lstFestivales.get(i).getId() == festivalId)
-			{
-				
-			}
-			i++;
-		}
-		
-		return reportesEncontrados;
+	    List<ReporteVenta> reporte = new ArrayList<>();
+
+	    for(UnidadVenta unidad : lstUnidadVenta)
+	    {
+	        double recaudacion =
+	                unidad.calcularRecaudacion(festivalId);
+
+	        if(recaudacion > 0)
+	        {
+	            reporte.add(
+	                new ReporteVenta(
+	                    unidad,
+	                    recaudacion));
+	        }
+	    }
+
+	    return reporte;
 	}
-	*/
 	
 	
 	

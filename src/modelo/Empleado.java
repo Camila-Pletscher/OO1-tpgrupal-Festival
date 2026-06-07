@@ -14,13 +14,13 @@ public abstract class Empleado {
 	protected LocalDate fechaIngreso;
 
 	public Empleado(int id, String nombre, String apellido, String dni,
-			LocalDate fechaNacimiento, LocalDate fechaIngreso) {
+			LocalDate fechaNacimiento, LocalDate fechaIngreso) throws Exception {
 
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
-		this.fechaNacimiento = fechaNacimiento;
+		this.setFechaNacimiento(fechaNacimiento); 
 		this.fechaIngreso = fechaIngreso;
 	}
 
@@ -48,10 +48,14 @@ public abstract class Empleado {
 		return fechaIngreso;
 	}
 
-	public boolean esMayorDeEdad() {
-
-		return Period.between(fechaNacimiento, LocalDate.now())
-				.getYears() >= 18;
+	public void setFechaNacimiento(LocalDate fechaNacimiento) throws Exception {
+		
+		if(Period.between(fechaNacimiento,LocalDate.now()).getYears() < 18)
+		{
+			throw new Exception("El empleado debe ser mayor de edad");
+		}
+		
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 	public int calcularAntiguedad() {
