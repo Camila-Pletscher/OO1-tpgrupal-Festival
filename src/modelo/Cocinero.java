@@ -14,7 +14,7 @@ public class Cocinero extends Empleado {
 			LocalDate fechaNacimiento,
 			LocalDate fechaIngreso,
 			String especialidad,
-			double plusCategoria) {
+			double plusCategoria) throws Exception {
 
 		super(id, nombre, apellido, dni, fechaNacimiento, fechaIngreso);
 

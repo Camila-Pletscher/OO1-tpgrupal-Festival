@@ -12,7 +12,7 @@ public class Cajero extends Empleado {
 			String dni,
 			LocalDate fechaNacimiento,
 			LocalDate fechaIngreso,
-			Turno turno) {
+			Turno turno) throws Exception {
 
 		super(id, nombre, apellido, dni, fechaNacimiento, fechaIngreso);
 

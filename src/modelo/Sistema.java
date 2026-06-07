@@ -212,20 +212,14 @@ public class Sistema {
 		return agregado;
 	}
 	
-	public boolean agregarCocinero(
-			String nombre,
-			String apellido,
-			String dni,
-			LocalDate fechaNacimiento,
-			LocalDate fechaIngreso,
-			String especialidad,
-			double plusCategoria) throws Exception {
+	public boolean agregarCocinero(	String nombre,String apellido,String dni,LocalDate fechaNacimiento,	LocalDate fechaIngreso,	String especialidad,double plusCategoria) throws Exception {
 
 		boolean agregado = false;
 
 		if(buscarEmpleadoPorDni(dni) != null) {
 			throw new Exception("El empleado ya existe");
 		}
+		
 
 		int id;
 
@@ -235,16 +229,7 @@ public class Sistema {
 			id = lstEmpleados.get(lstEmpleados.size()-1).getId() + 1;
 		}
 
-		Cocinero nuevo = new Cocinero(
-				id,
-				nombre,
-				apellido,
-				dni,
-				fechaNacimiento,
-				fechaIngreso,
-				especialidad,
-				plusCategoria);
-
+		Cocinero nuevo = new Cocinero(id,nombre,apellido,dni,fechaNacimiento,fechaIngreso,especialidad,	plusCategoria);
 		agregado = lstEmpleados.add(nuevo);
 
 		return agregado;
