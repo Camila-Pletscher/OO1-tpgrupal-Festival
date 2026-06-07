@@ -47,9 +47,16 @@ public class Plato {
 	public String toString() {
 		return "Plato [id=" + id +
 				", nombre=" + nombre +
-				", precioVenta=" + precioVenta +
-				", costoProduccion=" + costoProduccion + "]";
+				", precioVenta=" + precioVenta + "]";
 	}
+<<<<<<< Updated upstream
+=======
+	
+	public boolean equals(Plato plato)
+	{
+	    return this.nombre.equals(plato.getNombre());
+	}
+>>>>>>> Stashed changes
 
 
 

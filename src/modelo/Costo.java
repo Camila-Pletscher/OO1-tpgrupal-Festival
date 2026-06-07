@@ -3,13 +3,14 @@ package modelo;
 import java.util.Objects;
 
 public class Costo {
-	
+    private static int contadorId = 0;
 	private int id;
 	private TipoCosto tipo;
 	private double monto;
 
 	public Costo(int id, TipoCosto tipo, double monto) {
-		this.id = id;
+		
+		this.id = contadorId++;
 		this.tipo = tipo;
 		this.monto = monto;
 	}
