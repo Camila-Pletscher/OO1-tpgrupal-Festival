@@ -7,7 +7,6 @@ import java.util.List;
 import modelo.Festival;
 
 public class Sistema {
-
 	
 	List<Festival> lstFestivales;
 	List<Empleado> lstEmpleados;
@@ -43,7 +42,7 @@ public class Sistema {
 		}
 		
 		int id= lstFestivales.isEmpty()?1: lstFestivales.get(lstFestivales.size()-1).getId()+1;
-		Festival nuevo = new Festival(id,nombre,temporada,fechaInicio,fechaFin, costos);
+		Festival nuevo = new Festival(id,nombre,temporada,fechaInicio,fechaFin);
 		lstFestivales.add(nuevo);
 		return nuevo;
 	}
@@ -78,7 +77,7 @@ public class Sistema {
 		while(i<lstFestivales.size() && f==null)
 	    {
 			
-			if(lstFestivales.get(i).getNombre().equals(nombre))
+			if(lstFestivales.get(i).getNombre().equalsIgnoreCase(nombre))
 			{	
 				f = lstFestivales.get(i);
 
@@ -257,26 +256,24 @@ public class Sistema {
 	}
 
 	
+	// CASO DE USO N°5: Registro de pedido validado:  Método para agregar un pedido que invoque 
+	// internamente al CU #2 para validar la existencia de la Unidad y el Festival. 
+	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival, List<ItemPedido> items) throws Exception{
+		Festival festival = buscarFestival(nombreFestival);
+		UnidadVenta unidad = buscarUnidadPorCodigo(codigoUnidad);
+		if(festival == null || unidad == null) {
+			throw new Exception("Error: unidadVenta o festival no encontrado.");
+		}
+		int id;
+		if(unidad.getPedidos().isEmpty()) {
+			id = 1;
+		}else {
+			id = unidad.getPedidos().get(unidad.getPedidos().size()-1).getId()+1;
+		}
+		return unidad.getPedidos().add(new Pedido(id,fecha,items));
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	public void registrarPedido();
-	
-	Registro de Pedido Validado: 
-	Método para agregar un pedido que invoque internamente al CU #2 
-	para validar la existencia de la Unidad y el Festival.
-	
-	*/
-	
-	
-	
+
 	
 	
 	

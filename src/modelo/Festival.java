@@ -10,22 +10,28 @@ public class Festival {
 	private String temporada;
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
-	// TODO private List<UnidadVenta> unidades;
-	private List<Costo> costos;
+	private List<UnidadVenta> unidades;
+	
+	
+
+
 	
 	
 	
+	public Festival(int id, String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin) {
+
 	
 	
-	public Festival(int id, String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin,
-			List<Costo> costos) {
+
+
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.temporada = temporada;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
-		this.costos = costos;
+		this.unidades = new ArrayList<UnidadVenta>();
+
 	}
 	public int getId() {
 		return id;
@@ -57,18 +63,16 @@ public class Festival {
 	public void setFechaFin(LocalDate fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	public List<Costo> getCostos() {
-		return costos;
+	public List<UnidadVenta> getUnidades() {
+		return this.unidades;
 	}
-	public void setCostos(List<Costo> costos) {
-		this.costos = costos;
-	}
-	
 	
 	@Override
 	public String toString() {
 		return "\nFestival [id=" + id + ", nombre=" + nombre + ", temporada=" + temporada + ", fechaInicio=" + fechaInicio
-				+ ", fechaFin=" + fechaFin + ", costos=" + costos + "]";
+
+				+ ", fechaFin=" + fechaFin + " ]";
+
 	}
 
 	
@@ -79,13 +83,6 @@ public class Festival {
 		return festival.getId() == this.id;
 	}
 
-	
-	
-	
-
-	
-	
-	
 	
 	
 	
