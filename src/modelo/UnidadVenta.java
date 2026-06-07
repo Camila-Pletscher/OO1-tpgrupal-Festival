@@ -1,6 +1,7 @@
 package modelo;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 public abstract class UnidadVenta {
 	private int id;
@@ -10,7 +11,7 @@ public abstract class UnidadVenta {
 	protected String codigo;
 	protected List<Empleado> personal;
 	protected List<Plato> platos;
-	
+	protected List<Pedido> pedidos;
 	
 	public UnidadVenta(int id, String nombreComercial,
 						Empleado responsable, double superficie,
@@ -22,6 +23,7 @@ public abstract class UnidadVenta {
 		this.setCodigo(codigo);
 		this.personal = new ArrayList<>();
 		this.platos = new ArrayList<>();
+		this.pedidos = new ArrayList<>();
 	}
 
 	public int getId() {
@@ -66,7 +68,10 @@ public abstract class UnidadVenta {
 	public void setPlatos(List<Plato> platos) {
 		this.platos = platos;
 	}
-	
+	public List<Pedido> getPedidos(){
+		return this.pedidos;
+	}
+
 	public double calcularRecaudacion(int festivalId) {
 		//TODO 
 		return 0; 
@@ -87,4 +92,41 @@ public abstract class UnidadVenta {
 	{
 	    return this.codigo.equals(unidad.getCodigo());
 	}
+
+	
+	// CASO DE USO N°8: Cálculo de rentabilidad neta: calcular la ganancia de una unidad
+	// (pedidos totales - costos de platos) y restar obligatoriamente los sueldos y el canon
+	
+	public double calcularRentabilidadNeta() {
+		double total = 0;
+		for(Pedido p : this.getPedidos()) {
+			for(ItemPedido item : p.getItems()) {
+				total+= (item.getPlato().getPrecioVenta() - item.getPlato().getCostoProduccion()) * item.getCantidad();
+			}
+		}
+		for(Empleado e : this.getPersonal()) {
+			total -= e.calcularSueldo();
+		}
+		total -= this.calcularCanon();
+		
+		return total;
+	}
+	// CASO DE USO N°9: Para una unidad, calcule la rentabilidad neta entre dos fechas. 
+	public double calcularRentabilidadNetaEntreFechas(LocalDate fechaDesde, LocalDate fechaHasta) {
+		double total = 0;
+		for(Pedido p : this.getPedidos()) {
+			if(!p.getFecha().isBefore(fechaDesde) && !p.getFecha().isAfter(fechaHasta)) {
+				for(ItemPedido item : p.getItems()) {
+					total+= (item.getPlato().getPrecioVenta() - item.getPlato().getCostoProduccion()) * item.getCantidad();
+				}
+			}
+		}
+		for(Empleado e : this.getPersonal()) {
+			total -= e.calcularSueldo();
+		}
+		total -= this.calcularCanon();
+		
+		return total;
+	}
+
 }
