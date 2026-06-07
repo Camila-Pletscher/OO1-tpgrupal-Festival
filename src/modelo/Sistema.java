@@ -176,13 +176,7 @@ public class Sistema {
 	
 
 	//EMPLEADO
-	public boolean agregarCajero(
-			String nombre,
-			String apellido,
-			String dni,
-			LocalDate fechaNacimiento,
-			LocalDate fechaIngreso,
-			Turno turno) throws Exception {
+	public boolean agregarCajero(String nombre,	String apellido,String dni,	LocalDate fechaNacimiento,LocalDate fechaIngreso,Turno turno) throws Exception {
 
 		boolean agregado = false;
 
@@ -198,14 +192,7 @@ public class Sistema {
 			id = lstEmpleados.get(lstEmpleados.size()-1).getId() + 1;
 		}
 
-		Cajero nuevo = new Cajero(
-				id,
-				nombre,
-				apellido,
-				dni,
-				fechaNacimiento,
-				fechaIngreso,
-				turno);
+		Cajero nuevo = new Cajero(id,nombre,apellido,dni,fechaNacimiento,fechaIngreso,turno);
 
 		agregado = lstEmpleados.add(nuevo);
 
