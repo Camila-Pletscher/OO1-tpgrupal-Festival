@@ -1,6 +1,8 @@
 package test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelo.*;
 
@@ -139,6 +141,80 @@ public class Test {
 
 			System.out.println("Sueldo obtenido: "
 					+ cajero.calcularSueldo());
+			
+			System.out.println("\n======== CU6 REPORTE RECAUDACION ========");
+
+			// FESTIVAL
+			Festival festival = s.agregarFestival(
+			        "Festival Gourmet",
+			        "Verano",
+			        LocalDate.of(2026, 1, 10),
+			        LocalDate.of(2026, 1, 15),
+			        null);
+
+			// PLATOS
+			Plato hamburguesa =
+			        new Plato(
+			                1,
+			                "Hamburguesa",
+			                1000,
+			                400);
+
+			Plato papas =
+			        new Plato(
+			                2,
+			                "Papas Fritas",
+			                500,
+			                150);
+
+			// ITEMS
+			ItemPedido item1 =
+			        new ItemPedido(
+			                2,
+			                hamburguesa);
+
+			ItemPedido item2 =
+			        new ItemPedido(
+			                3,
+			                papas);
+
+			List<ItemPedido> items =
+			        new ArrayList<ItemPedido>();
+
+			items.add(item1);
+			items.add(item2);
+
+			// PEDIDO
+			Pedido pedido =
+			        new Pedido(
+			                1,
+			                LocalDate.now(),
+			                festival,
+			                items);
+
+			// LO AGREGAMOS AL FOODTRUCK
+			ft.getPedidos().add(pedido);
+
+			// PROBAMOS CALCULO DE RECAUDACION
+			System.out.println("\nRecaudacion esperada: 3500");
+			System.out.println("Recaudacion obtenida: "
+			        + ft.calcularRecaudacion(festival.getId()));
+
+			// REPORTE
+			List<ReporteVenta> reporte =
+			        s.reporteRecaudacion(festival.getId());
+
+			System.out.println("\nCantidad reportes esperada: 1");
+			System.out.println("Cantidad reportes obtenida: "
+			        + reporte.size());
+
+			for(ReporteVenta r : reporte)
+			{
+			    System.out.println(
+			            r.getUnidad().getNombreComercial()
+			            + " -> "
+			            + r.getTotalRecaudado());
+			}
 
 		}
 		catch(Exception e) {

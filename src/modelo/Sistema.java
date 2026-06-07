@@ -270,7 +270,7 @@ public class Sistema {
 		}else {
 			id = unidad.getPedidos().get(unidad.getPedidos().size()-1).getId()+1;
 		}
-		return unidad.getPedidos().add(new Pedido(id,fecha,items));
+		return unidad.getPedidos().add(new Pedido(id,fecha, festival, items));
 	}
 	
 
@@ -278,26 +278,26 @@ public class Sistema {
 	
 	
 	
-	/*
-	Reporte de Recaudación: Dado un festival, 
-	retornar la lista de unidades y su recaudación total (usar clase ReporteVenta, no persistente). 
-	
 	public List<ReporteVenta> reporteRecaudacion(int festivalId)
 	{
-		List<ReporteVenta> reportesEncontrados = new ArrayList<ReporteVenta>();
-		int i=0;
-		while(i<lstFestivales.size())
-		{
-			if(lstFestivales.get(i).getId() == festivalId)
-			{
-				
-			}
-			i++;
-		}
-		
-		return reportesEncontrados;
+	    List<ReporteVenta> reporte = new ArrayList<>();
+
+	    for(UnidadVenta unidad : lstUnidadVenta)
+	    {
+	        double recaudacion =
+	                unidad.calcularRecaudacion(festivalId);
+
+	        if(recaudacion > 0)
+	        {
+	            reporte.add(
+	                new ReporteVenta(
+	                    unidad,
+	                    recaudacion));
+	        }
+	    }
+
+	    return reporte;
 	}
-	*/
 	
 	
 	
