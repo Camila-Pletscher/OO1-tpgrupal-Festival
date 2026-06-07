@@ -2,6 +2,7 @@ package modelo;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 public abstract class Empleado {
 
@@ -55,8 +56,7 @@ public abstract class Empleado {
 
 	public int calcularAntiguedad() {
 
-		return Period.between(fechaIngreso, LocalDate.now())
-				.getYears();
+		return Period.between(fechaIngreso, LocalDate.now()).getYears();
 	}
 
 	//METODO ABSTRACTO
@@ -71,4 +71,17 @@ public abstract class Empleado {
 				", apellido=" + apellido +		
 				", dni=" + dni + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(apellido, dni, fechaIngreso, fechaNacimiento, id, nombre);
+	}
+
+	public boolean equals(Empleado empleado)
+	{
+	    return this.dni.equals(empleado.getDni());
+	}
+	
+	
+	
 }

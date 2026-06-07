@@ -49,14 +49,12 @@ public class Plato {
 				", nombre=" + nombre +
 				", precioVenta=" + precioVenta + "]";
 	}
-<<<<<<< Updated upstream
-=======
 	
 	public boolean equals(Plato plato)
 	{
 	    return this.nombre.equals(plato.getNombre());
 	}
->>>>>>> Stashed changes
+
 
 
 

@@ -1,9 +1,12 @@
 package modelo;
 
-public class Sistema {
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-<<<<<<< Updated upstream
-=======
+import modelo.Festival;
+
+public class Sistema {
 	
 	List<Festival> lstFestivales;
 	List<Empleado> lstEmpleados;
@@ -401,5 +404,4 @@ public class Sistema {
 	+auditoriaPersonal(festivalId:int): List<Empleado>
 	+top3UnidadesMayorCanon(festivalId:int): List<ReporteMayoresCanon
 	*/
->>>>>>> Stashed changes
 }

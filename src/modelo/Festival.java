@@ -1,5 +1,6 @@
 package modelo;
 import java.util.List;
+import java.util.Objects;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
@@ -12,12 +13,17 @@ public class Festival {
 	private List<UnidadVenta> unidades;
 	
 	
-<<<<<<< Updated upstream
-=======
+
+
 	
 	
 	
 	public Festival(int id, String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin) {
+
+	
+	
+
+
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -25,6 +31,7 @@ public class Festival {
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.unidades = new ArrayList<UnidadVenta>();
+
 	}
 	public int getId() {
 		return id;
@@ -63,7 +70,9 @@ public class Festival {
 	@Override
 	public String toString() {
 		return "\nFestival [id=" + id + ", nombre=" + nombre + ", temporada=" + temporada + ", fechaInicio=" + fechaInicio
+
 				+ ", fechaFin=" + fechaFin + " ]";
+
 	}
 
 	
@@ -77,12 +86,4 @@ public class Festival {
 	
 	
 	
-
-	
-	
-	
-	
-	
-	
->>>>>>> Stashed changes
 }

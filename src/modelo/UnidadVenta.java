@@ -68,16 +68,14 @@ public abstract class UnidadVenta {
 	public void setPlatos(List<Plato> platos) {
 		this.platos = platos;
 	}
-<<<<<<< Updated upstream
-=======
 	public List<Pedido> getPedidos(){
 		return this.pedidos;
 	}
+
 	public double calcularRecaudacion(int festivalId) {
 		//TODO 
 		return 0; 
 	}
->>>>>>> Stashed changes
 	
 	@Override
 	public String toString() {
@@ -89,13 +87,12 @@ public abstract class UnidadVenta {
 				" | Platos: "+ this.getPlatos().toString();
 	}
 	public abstract double calcularCanon();
-<<<<<<< Updated upstream
-=======
 	
 	public boolean equals(UnidadVenta unidad)
 	{
 	    return this.codigo.equals(unidad.getCodigo());
 	}
+
 	
 	// CASO DE USO N°8: Cálculo de rentabilidad neta: calcular la ganancia de una unidad
 	// (pedidos totales - costos de platos) y restar obligatoriamente los sueldos y el canon
@@ -131,6 +128,5 @@ public abstract class UnidadVenta {
 		
 		return total;
 	}
-	
->>>>>>> Stashed changes
+
 }

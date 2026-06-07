@@ -47,6 +47,10 @@ public class Costo {
 		return Objects.hash(id);
 	}
 
+	public boolean equals(Costo costo)
+	{
+	    return this.id == costo.getId();
+	}
 
 
 }
