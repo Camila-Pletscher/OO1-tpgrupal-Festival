@@ -76,10 +76,7 @@ public abstract class Empleado {
 				", dni=" + dni + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(apellido, dni, fechaIngreso, fechaNacimiento, id, nombre);
-	}
+
 
 	public boolean equals(Empleado empleado)
 	{

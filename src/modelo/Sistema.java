@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import modelo.Festival;
 
 public class Sistema {
 	
@@ -33,7 +32,6 @@ public class Sistema {
 		return lstUnidadVenta;
 	}
 	
-	//FESTIVAL
 	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin, List<Costo> costos) throws Exception
 	{
 		if(buscarFestival(nombre)!=null)
@@ -48,7 +46,7 @@ public class Sistema {
 	}
 	
 	
-	public boolean eliminarFestival(int id)
+	public boolean eliminarFestival(int id) throws Exception
 	{
 	    boolean eliminado = false;
 
@@ -65,12 +63,16 @@ public class Sistema {
 	        i++;
 	    }
 
+	    if(eliminado==false)
+	    {
+	    	throw new Exception("El festival a eliminar no se encontró");
+	    }
 	    return eliminado;
 	}
 	
 	
 	
-	public Festival buscarFestival(String nombre)
+	public Festival buscarFestival(String nombre) throws Exception
 	{
 		Festival f = null;
 		int i=0;
@@ -80,10 +82,14 @@ public class Sistema {
 			if(lstFestivales.get(i).getNombre().equalsIgnoreCase(nombre))
 			{	
 				f = lstFestivales.get(i);
-
 			}
 			i++;
 	    }
+		
+		if(f==null)
+		{
+			throw new Exception("El festival ingresado no existe");
+		}
 		return f;
 	}
 
@@ -138,7 +144,7 @@ public class Sistema {
 	
 	
 	
-	public boolean eliminarUnidadVenta(String codigo)
+	public boolean eliminarUnidadVenta(String codigo) throws Exception
 	{
 		boolean eliminado=false;
 		int i=0;
@@ -151,11 +157,16 @@ public class Sistema {
 			  }
 			  i++;    
 		}
+		
+		if(eliminado==false)
+		{
+			throw new Exception("La Unidad-Venta ingresada no existe");
+		}
 		return eliminado;
 	}
 	
 	
-	public UnidadVenta buscarUnidadPorCodigo(String codigo)
+	public UnidadVenta buscarUnidadPorCodigo(String codigo) throws Exception
 	{
 		UnidadVenta uv = null;
 		int i=0;
@@ -168,6 +179,12 @@ public class Sistema {
 			}
 			i++;
 	    }
+		
+		
+		if(uv==null)
+		{
+			throw new Exception("La Unidad-Venta buscada no existe");
+		}
 		return uv;
 	}
 	
@@ -221,7 +238,7 @@ public class Sistema {
 		return agregado;
 	}
 	
-	public boolean eliminarEmpleado(String dni)
+	public boolean eliminarEmpleado(String dni) throws Exception
 	{
 		boolean eliminado=false;
 		int i=0;
@@ -232,13 +249,17 @@ public class Sistema {
 			      lstEmpleados.remove(i);
 			      eliminado = true;
 			  }
-			  i++;    
+			  i++;     
+		}
+		if(eliminado==false)
+		{
+			throw new Exception("El empleado a eliminar no existe");
 		}
 		return eliminado;
 	}
 	
 	
-	public Empleado buscarEmpleadoPorDni(String dni)
+	public Empleado buscarEmpleadoPorDni(String dni) throws Exception
 	{
 		Empleado e = null;
 		int i=0;
@@ -249,9 +270,14 @@ public class Sistema {
 			{
 				e = lstEmpleados.get(i);
 			}
-			i++;
-			
+			i++;	
 	    }
+		
+		if(e==null)
+		{
+			throw new Exception("El empleado buscado no existe");
+		}
+		
 		return e;
 	}
 
@@ -277,11 +303,15 @@ public class Sistema {
 	
 	
 	
-	
+	// CASO DE USO N°6: Reporte de Recaudación
+	// Dado un festival, retornar la lista de unidades y su recaudación total 
+	// (usar clase ReporteVenta, no persistente)
 	public List<ReporteVenta> reporteRecaudacion(int festivalId)
 	{
 	    List<ReporteVenta> reporte = new ArrayList<>();
 
+		// Acá tendría que usarse  if(buscarFestival(nombre)!=null) {} 
+	    
 	    for(UnidadVenta unidad : lstUnidadVenta)
 	    {
 	        double recaudacion =
@@ -299,11 +329,11 @@ public class Sistema {
 	    return reporte;
 	}
 	
+
 	
 	
-	
-	
-	
+	// CASO DE USO N°7: Filtro de Personal por Edad
+	//  Retornar una lista de empleados nacidos entre dos fechas
 	public List<Empleado> filtrarEmpleadosPorEdad(LocalDate desde,LocalDate hasta)
 	{
 		List<Empleado> empleadosEncontrados = new ArrayList<Empleado>();
@@ -311,9 +341,9 @@ public class Sistema {
 		while(i<lstEmpleados.size())
 		{
 			if(
-				(!lstEmpleados.get(i).getFechaNacimiento().isAfter(desde))
+				(!lstEmpleados.get(i).getFechaNacimiento().isBefore(desde))
 				&& 
-				(!lstEmpleados.get(i).getFechaNacimiento().isBefore(hasta))
+				(!lstEmpleados.get(i).getFechaNacimiento().isAfter(hasta))
 				)
 			{
 				empleadosEncontrados.add(lstEmpleados.get(i));
@@ -324,56 +354,43 @@ public class Sistema {
 	}
 	
 	
-	public List<UnidadVenta> rankingUnidades(int festivalId)
+	public List<UnidadVenta> rankingUnidades(int festivalId) throws Exception
 	{
 		List<UnidadVenta> lstRankingUnidades = new ArrayList<UnidadVenta>();
 		int i=0;
-		 while(i < lstUnidadVenta.size())
-		 {
-			 int j= i+1;
-			 while(j < lstUnidadVenta.size())
+		
+		// Acá tendría que usarse  if(buscarFestival(nombre)!=null) {} 
+			while(i < lstUnidadVenta.size())
 			 {
-				 if(lstRankingUnidades.get(i).calcularRecaudacion(festivalId) 
-					 < 
-					lstRankingUnidades.get(j).calcularRecaudacion(festivalId))
+				 int j= i+1;
+				 while(j < lstUnidadVenta.size())
 				 {
-					 UnidadVenta aux = lstRankingUnidades.get(i);
-		             lstRankingUnidades.set(i, lstRankingUnidades.get(j));
-		             lstRankingUnidades.set(j, aux);
-				 } 
-				 j++;	 
+					 if(lstRankingUnidades.get(i).calcularRecaudacion(festivalId) 
+						 < 
+						lstRankingUnidades.get(j).calcularRecaudacion(festivalId))
+					 {
+						 UnidadVenta aux = lstRankingUnidades.get(i);
+			             lstRankingUnidades.set(i, lstRankingUnidades.get(j));
+			             lstRankingUnidades.set(j, aux);
+					 } 
+					 j++;	 
+				 }
+			     i++;
 			 }
-		     i++;
-		 }
+		
 		return lstRankingUnidades;
 	}
 	
 
-	/*
-	Auditoría de Personal del Festival:
-	Método que retorne la lista de todo el personal que trabajó en un festival específico. 
+	//CASO DE USO N°12: Auditoría de Personal del Festival:
+	//Método que retorne la lista de todo el personal que trabajó en un festival específico. 
 	 
-	public List<Empleado> auditoriaPersonal(int festivalId)
+	public List<Empleado> auditoriaPersonal(String nombre) throws Exception 
 	{
-		List<Empleado> empleadosEncontrados = new ArrayList<Empleado>();
-		int i=0;
-		 while(i < lstEmpleados.size())
-		 {
-			if()
-			{
-					// comparación
-			}
-			
-			 i++;
-		 }
-		 return empleadosEncontrados;
+		Festival f = buscarFestival(nombre);
+		return f.getEmpleados();
 	}
-	/*
-	 
-	 
+
 	
-	/*Funciones pendientes
-	+auditoriaPersonal(festivalId:int): List<Empleado>
-	+top3UnidadesMayorCanon(festivalId:int): List<ReporteMayoresCanon
-	*/
+	
 }
