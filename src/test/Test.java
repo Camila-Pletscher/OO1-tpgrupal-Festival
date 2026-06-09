@@ -234,7 +234,7 @@ public class Test {
 		}
 		
 		try {
-			System.out.println("\n======== CU12 AUDITORIA PERSONAL DEL FESTIVAL ========");
+			
 
 			// Crear festival
 			Festival festival = new Festival(
@@ -265,6 +265,25 @@ public class Test {
 			festival.getUnidades().add(foodTruck);
 			festival.getUnidades().add(puesto);
 			festival.getUnidades().add(foodTruck2);
+			
+			System.out.println("\n======== CU10 RANKING DE UNIDADES ========");
+
+			List<UnidadVenta> ranking =
+			        s.rankingUnidades(festival);
+
+			for(UnidadVenta unidad : ranking)
+			{
+			    System.out.println(
+			            unidad.getNombreComercial()
+			            +
+			            " - Recaudación: "
+			            +
+			            unidad.calcularRecaudacion(festival));
+
+			
+			}
+			
+			System.out.println("\n======== CU12 AUDITORIA PERSONAL DEL FESTIVAL ========");
 
 			// Ejecutar CU12
 			List<Empleado> auditoria = s.auditoriaPersonal(festival);
@@ -295,10 +314,8 @@ public class Test {
 			System.out.println("ERROR:");
 			System.out.println(e.getMessage());
 
-		} 
+		}
 		
 		
 
-	}
-
-}
+}}

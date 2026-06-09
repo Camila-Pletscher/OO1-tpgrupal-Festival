@@ -7,12 +7,12 @@ import java.util.List;
 import modelo.Festival;
 
 public class Sistema {
-	
+
 	List<Festival> lstFestivales;
 	List<Empleado> lstEmpleados;
 	List<UnidadVenta> lstUnidadVenta;
-	
-	
+
+
 	public Sistema() {
 		super();
 		this.lstFestivales = new ArrayList<Festival>();
@@ -32,7 +32,7 @@ public class Sistema {
 	public List<UnidadVenta> getLstUnidadVenta() {
 		return lstUnidadVenta;
 	}
-	
+
 	//FESTIVAL
 	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin, List<Costo> costos) throws Exception
 	{
@@ -40,55 +40,55 @@ public class Sistema {
 		{
 			throw new Exception("El festival ya esta ingresado");
 		}
-		
+
 		int id= lstFestivales.isEmpty()?1: lstFestivales.get(lstFestivales.size()-1).getId()+1;
 		Festival nuevo = new Festival(id,nombre,temporada,fechaInicio,fechaFin);
 		lstFestivales.add(nuevo);
 		return nuevo;
 	}
-	
-	
+
+
 	public boolean eliminarFestival(int id)
 	{
-	    boolean eliminado = false;
+		boolean eliminado = false;
 
-	    int i = 0;
+		int i = 0;
 
-	    while(i < lstFestivales.size() && !eliminado)
-	    {
-	        if(lstFestivales.get(i).getId() == id)
-	        {
-	            lstFestivales.remove(i);
-	            eliminado = true;
-	        }
+		while(i < lstFestivales.size() && !eliminado)
+		{
+			if(lstFestivales.get(i).getId() == id)
+			{
+				lstFestivales.remove(i);
+				eliminado = true;
+			}
 
-	        i++;
-	    }
+			i++;
+		}
 
-	    return eliminado;
+		return eliminado;
 	}
-	
-	
-	
+
+
+
 	public Festival buscarFestival(String nombre)
 	{
 		Festival f = null;
 		int i=0;
 		while(i<lstFestivales.size() && f==null)
-	    {
-			
+		{
+
 			if(lstFestivales.get(i).getNombre().equalsIgnoreCase(nombre))
 			{	
 				f = lstFestivales.get(i);
 
 			}
 			i++;
-	    }
+		}
 		return f;
 	}
 
-	
-	
+
+
 	//UNIDAD
 	public boolean agregarFoodTruck(String nombreComercial,	Empleado responsable, double superficie,String codigo,String patente,boolean requiereElectricidad) throws Exception {
 
@@ -112,7 +112,7 @@ public class Sistema {
 
 		return agregado;
 	}
-	
+
 	public boolean agregarPuestoDesarmable(	String nombreComercial,	Empleado responsable,double superficie,	String codigo,int cantidadCarpas,	int tiempoMontaje) throws Exception {
 
 		boolean agregado = false;
@@ -135,44 +135,44 @@ public class Sistema {
 
 		return agregado;
 	}
-	
-	
-	
+
+
+
 	public boolean eliminarUnidadVenta(String codigo)
 	{
 		boolean eliminado=false;
 		int i=0;
 		while(i<lstUnidadVenta.size() && eliminado==false)
-	    {
-			  if(lstUnidadVenta.get(i).getCodigo().equals(codigo))
-			  {
-			      lstUnidadVenta.remove(i);
-			      eliminado = true;
-			  }
-			  i++;    
+		{
+			if(lstUnidadVenta.get(i).getCodigo().equals(codigo))
+			{
+				lstUnidadVenta.remove(i);
+				eliminado = true;
+			}
+			i++;    
 		}
 		return eliminado;
 	}
-	
-	
+
+
 	public UnidadVenta buscarUnidadPorCodigo(String codigo)
 	{
 		UnidadVenta uv = null;
 		int i=0;
 		while(i<lstUnidadVenta.size() && uv==null)
-	    {
-			
+		{
+
 			if(lstUnidadVenta.get(i).getCodigo().equals(codigo))
 			{
 				uv = lstUnidadVenta.get(i);
 			}
 			i++;
-	    }
+		}
 		return uv;
 	}
-	
-	
-	
+
+
+
 
 	//EMPLEADO
 	public boolean agregarCajero(String nombre,	String apellido,String dni,	LocalDate fechaNacimiento,LocalDate fechaIngreso,Turno turno) throws Exception {
@@ -197,7 +197,7 @@ public class Sistema {
 
 		return agregado;
 	}
-	
+
 	public boolean agregarCocinero(	String nombre,String apellido,String dni,LocalDate fechaNacimiento,	LocalDate fechaIngreso,	String especialidad,double plusCategoria) throws Exception {
 
 		boolean agregado = false;
@@ -205,7 +205,7 @@ public class Sistema {
 		if(buscarEmpleadoPorDni(dni) != null) {
 			throw new Exception("El empleado ya existe");
 		}
-		
+
 
 		int id;
 
@@ -220,42 +220,42 @@ public class Sistema {
 
 		return agregado;
 	}
-	
+
 	public boolean eliminarEmpleado(String dni)
 	{
 		boolean eliminado=false;
 		int i=0;
 		while(i<lstEmpleados.size() && eliminado==false)
-	    {
-			  if(lstEmpleados.get(i).getDni().equals(dni))
-			  {
-			      lstEmpleados.remove(i);
-			      eliminado = true;
-			  }
-			  i++;    
+		{
+			if(lstEmpleados.get(i).getDni().equals(dni))
+			{
+				lstEmpleados.remove(i);
+				eliminado = true;
+			}
+			i++;    
 		}
 		return eliminado;
 	}
-	
-	
+
+
 	public Empleado buscarEmpleadoPorDni(String dni)
 	{
 		Empleado e = null;
 		int i=0;
 		while(i<lstEmpleados.size() && e==null)
-	    {
-			
+		{
+
 			if(lstEmpleados.get(i).getDni().equals(dni))
 			{
 				e = lstEmpleados.get(i);
 			}
 			i++;
-			
-	    }
+
+		}
 		return e;
 	}
 
-	
+
 	// CASO DE USO N°5: Registro de pedido validado:  Método para agregar un pedido que invoque 
 	// internamente al CU #2 para validar la existencia de la Unidad y el Festival. 
 	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival, List<ItemPedido> items) throws Exception{
@@ -272,38 +272,38 @@ public class Sistema {
 		}
 		return unidad.getPedidos().add(new Pedido(id,fecha, festival, items));
 	}
-	
 
-	
-	
-	
-	
+
+
+
+
+
 	public List<ReporteVenta> reporteRecaudacion(Festival festival)
 	{
-	    List<ReporteVenta> reporte = new ArrayList<>();
+		List<ReporteVenta> reporte = new ArrayList<>();
 
-	    for(UnidadVenta unidad : lstUnidadVenta)
-	    {
-	        double recaudacion =
-	                unidad.calcularRecaudacion(festival);
+		for(UnidadVenta unidad : lstUnidadVenta)
+		{
+			double recaudacion =
+					unidad.calcularRecaudacion(festival);
 
-	        if(recaudacion > 0)
-	        {
-	            reporte.add(
-	                new ReporteVenta(
-	                    unidad,
-	                    recaudacion));
-	        }
-	    }
+			if(recaudacion > 0)
+			{
+				reporte.add(
+						new ReporteVenta(
+								unidad,
+								recaudacion));
+			}
+		}
 
-	    return reporte;
+		return reporte;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	public List<Empleado> filtrarEmpleadosPorEdad(LocalDate desde,LocalDate hasta)
 	{
 		List<Empleado> empleadosEncontrados = new ArrayList<Empleado>();
@@ -311,10 +311,10 @@ public class Sistema {
 		while(i<lstEmpleados.size())
 		{
 			if(
-				(!lstEmpleados.get(i).getFechaNacimiento().isAfter(desde))
-				&& 
-				(!lstEmpleados.get(i).getFechaNacimiento().isBefore(hasta))
-				)
+					(!lstEmpleados.get(i).getFechaNacimiento().isAfter(desde))
+					&& 
+					(!lstEmpleados.get(i).getFechaNacimiento().isBefore(hasta))
+					)
 			{
 				empleadosEncontrados.add(lstEmpleados.get(i));
 			}
@@ -322,133 +322,142 @@ public class Sistema {
 		}
 		return empleadosEncontrados;
 	}
-	
-	
+
+
+	//CU 10 - RANKING UNIDADES DE MAYOR A MENOS 
 	public List<UnidadVenta> rankingUnidades(Festival festival)
 	{
 		List<UnidadVenta> lstRankingUnidades = new ArrayList<UnidadVenta>();
-		int i=0;
-		 while(i < lstUnidadVenta.size())
-		 {
-			 int j= i+1;
-			 while(j < lstUnidadVenta.size())
-			 {
-				 if(lstRankingUnidades.get(i).calcularRecaudacion(festival) 
-					 < 
-					lstRankingUnidades.get(j).calcularRecaudacion(festival))
-				 {
-					 UnidadVenta aux = lstRankingUnidades.get(i);
-		             lstRankingUnidades.set(i, lstRankingUnidades.get(j));
-		             lstRankingUnidades.set(j, aux);
-				 } 
-				 j++;	 
-			 }
-		     i++;
-		 }
+
+		lstRankingUnidades.addAll(festival.getUnidades());
+
+		int i = 0;
+
+		while(i < lstRankingUnidades.size())
+		{
+			int j = i + 1;
+
+			while(j < lstRankingUnidades.size())
+			{
+				if(lstRankingUnidades.get(i).calcularRecaudacion(festival) < lstRankingUnidades.get(j).calcularRecaudacion(festival))
+				{
+					UnidadVenta aux = lstRankingUnidades.get(i);
+
+					lstRankingUnidades.set(i, lstRankingUnidades.get(j));
+
+					lstRankingUnidades.set(j, aux);
+				}
+
+				j++;
+			}
+
+			i++;
+		}
+
 		return lstRankingUnidades;
 	}
 
-	 
+
 	// FX PARA  QUE NO SE REPITA EL EMPLEADO EN LA LISTA 
 	private boolean existeEmpleado(List<Empleado> lista, Empleado empleado)
 	{
-	    boolean existe = false;
+		boolean existe = false;
 
-	    int i = 0;
+		int i = 0;
 
-	    while(i < lista.size() && !existe)
-	    {
-	        if(lista.get(i).equals(empleado))
-	        {
-	            existe = true;
-	        }
+		while(i < lista.size() && !existe)
+		{
+			if(lista.get(i).equals(empleado))
+			{
+				existe = true;
+			}
 
-	        i++;
-	    }
+			i++;
+		}
 
-	    return existe;
+		return existe;
 	}
-	
+
 	//CU12 - AUDITORIA PERSONAL DEL FESTIVAL 
 	public List<Empleado> auditoriaPersonal(Festival festival)
 	{
-	    List<Empleado> empleadosEncontrados = new ArrayList<>();
+		List<Empleado> empleadosEncontrados = new ArrayList<>();
 
-	    for(UnidadVenta unidad : festival.getUnidades())
-	    {
-	        for(Empleado empleado : unidad.getPersonal())
-	        {
-	            if(!existeEmpleado(empleadosEncontrados, empleado))
-	            {
-	                empleadosEncontrados.add(empleado);
-	            }
-	        }
-	    }
+		for(UnidadVenta unidad : festival.getUnidades())
+		{
+			for(Empleado empleado : unidad.getPersonal())
+			{
+				if(!existeEmpleado(empleadosEncontrados, empleado))
+				{
+					empleadosEncontrados.add(empleado);
+				}
+			}
+		}
 
-	    return empleadosEncontrados;
+		return empleadosEncontrados;
 	}
-	
+
 	/*Funciones pendientes
 	+top3UnidadesMayorCanon(festivalId:int): List<ReporteMayoresCanon
-	*/
-	
-	
+	 */
+
+
 	public List<ReporteMayoresCanon> top3UnidadesMayorCanon(Festival festival)
 	{
-	    List<ReporteMayoresCanon> reporte = new ArrayList<ReporteMayoresCanon>();
+		List<ReporteMayoresCanon> reporte = new ArrayList<ReporteMayoresCanon>();
 
-	    for(UnidadVenta unidad : festival.getUnidades())
-	    {
-	        String tipoUnidad;
+		for(UnidadVenta unidad : festival.getUnidades())
+		{
+			String tipoUnidad;
 
-	        if(unidad instanceof FoodTruck)
-	        {
-	            tipoUnidad = "FoodTruck";
-	        }
-	        else
-	        {
-	            tipoUnidad = "PuestoDesarmable";
-	        }
+			if(unidad instanceof FoodTruck)
+			{
+				tipoUnidad = "FoodTruck";
+			}
+			else
+			{
+				tipoUnidad = "PuestoDesarmable";
+			}
 
-	        ReporteMayoresCanon r = new ReporteMayoresCanon(unidad.getNombreComercial(), unidad.getCodigo(), tipoUnidad, unidad.calcularCanon());
+			ReporteMayoresCanon r = new ReporteMayoresCanon(unidad.getNombreComercial(), unidad.getCodigo(), tipoUnidad, unidad.calcularCanon());
 
-	        reporte.add(r);
-	    }
+			reporte.add(r);
+		}
 
-	    int i = 0;
+		int i = 0;
 
-	    while(i < reporte.size())
-	    {
-	        int j = i + 1;
+		while(i < reporte.size())
+		{
+			int j = i + 1;
 
-	        while(j < reporte.size())
-	        {
-	            if(reporte.get(i).getCannon() < reporte.get(j).getCannon())
-	            {
-	                ReporteMayoresCanon aux = reporte.get(i);
+			while(j < reporte.size())
+			{
+				if(reporte.get(i).getCannon() < reporte.get(j).getCannon())
+				{
+					ReporteMayoresCanon aux = reporte.get(i);
 
-	                reporte.set(i, reporte.get(j));
+					reporte.set(i, reporte.get(j));
 
-	                reporte.set(j, aux);
-	            }
+					reporte.set(j, aux);
+				}
 
-	            j++;
-	        }
+				j++;
+			}
 
-	        i++;
-	    }
+			i++;
+		}
 
-	    List<ReporteMayoresCanon> top3 = new ArrayList<ReporteMayoresCanon>();
+		List<ReporteMayoresCanon> top3 = new ArrayList<ReporteMayoresCanon>();
 
-	    i = 0;
+		i = 0;
 
-	    while(i < reporte.size() && i < 3)
-	    {
-	        top3.add(reporte.get(i));
+		while(i < reporte.size() && i < 3)
+		{
+			top3.add(reporte.get(i));
 
-	        i++;
-	    }
+			i++;
+		}
 
-	    return top3;
+		return top3;
 	}
 }
