@@ -9,13 +9,14 @@ import modelo.*;
 public class Test {
 
 	public static void main(String[] args) {
+		Sistema s = new Sistema();
+		
 
 		try {
 
 			System.out.println("======== CU1 ALTAS ========");
 
-			Sistema s = new Sistema();
-
+			
 			s.agregarCocinero(
 					"Juan",
 					"Perez",
@@ -198,11 +199,11 @@ public class Test {
 			// PROBAMOS CALCULO DE RECAUDACION
 			System.out.println("\nRecaudacion esperada: 3500");
 			System.out.println("Recaudacion obtenida: "
-			        + ft.calcularRecaudacion(festival.getId()));
+			        + ft.calcularRecaudacion(festival));
 
 			// REPORTE
 			List<ReporteVenta> reporte =
-			        s.reporteRecaudacion(festival.getId());
+			        s.reporteRecaudacion(festival);
 
 			System.out.println("\nCantidad reportes esperada: 1");
 			System.out.println("Cantidad reportes obtenida: "
@@ -223,6 +224,56 @@ public class Test {
 			System.out.println(e.getMessage());
 
 		}
+		
+		try {
+			System.out.println("\n======== CU12 AUDITORIA PERSONAL DEL FESTIVAL ========");
+
+			// Crear festival
+			Festival festival = new Festival(
+			        1,
+			        "Festival Gourmet",
+			        "Verano",
+			        LocalDate.of(2025, 1, 10),
+			        LocalDate.of(2025, 1, 15)
+			);
+
+			// Recuperar empleados ya creados
+			Empleado cocinero = s.buscarEmpleadoPorDni("12345678");
+			Empleado cajero = s.buscarEmpleadoPorDni("87654321");
+
+			// Recuperar unidades ya creadas
+			UnidadVenta foodTruck = s.buscarUnidadPorCodigo("ABC1234567");
+			UnidadVenta puesto = s.buscarUnidadPorCodigo("XYZ1234567");
+
+			// Agregar empleados a las unidades
+			foodTruck.getPersonal().add(cocinero);
+			foodTruck.getPersonal().add(cajero);
+
+			// El cocinero trabaja también en el puesto
+			puesto.getPersonal().add(cocinero);
+
+			// Asociar unidades al festival
+			festival.getUnidades().add(foodTruck);
+			festival.getUnidades().add(puesto);
+
+			// Ejecutar CU12
+			List<Empleado> auditoria = s.auditoriaPersonal(festival);
+
+			System.out.println("Cantidad esperada: 2");
+			System.out.println("Cantidad obtenida: " + auditoria.size());
+
+			System.out.println("\nEmpleados encontrados:");
+
+			for(Empleado e : auditoria)
+			{
+			    System.out.println(e);
+			}
+		} catch(Exception e) {
+
+			System.out.println("ERROR:");
+			System.out.println(e.getMessage());
+
+		} 
 
 	}
 
