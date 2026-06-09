@@ -153,24 +153,44 @@ public class Sistema {
 	
 	
 	
-	public boolean eliminarUnidadVenta(String codigo) throws Exception
+	public boolean eliminarFoodTrack(String codigo) throws Exception
 	{
 		boolean eliminado=false;
 		int i=0;
-		while(i<lstUnidadVenta.size() && eliminado==false)
-	    {
-			  if(lstUnidadVenta.get(i).getCodigo().equals(codigo))
-			  {
-			      lstUnidadVenta.remove(i);
-			      eliminado = true;
-			  }
-			  i++;    
-		}
 		
-		if(eliminado==false)
-		{
-			throw new Exception("La Unidad-Venta ingresada no existe");
-		}
+			if(buscarUnidadPorCodigo(codigo)!=null)
+			{
+				while(i<lstUnidadVenta.size() && eliminado==false)
+				{
+					  if(lstUnidadVenta.get(i) instanceof FoodTruck)
+					  {
+						  lstUnidadVenta.remove(i);
+					      eliminado = true;
+					  }
+				  i++;  
+				}
+			}	
+		return eliminado;
+	}
+	
+
+	public boolean eliminarPuestoDesarmable(String codigo) throws Exception
+	{
+		boolean eliminado=false;
+		int i=0;
+		
+			if(buscarUnidadPorCodigo(codigo)!=null)
+			{
+				while(i<lstUnidadVenta.size() && eliminado==false)
+				{
+					  if(lstUnidadVenta.get(i) instanceof PuestoDesarmable)
+					  {
+						  lstUnidadVenta.remove(i);
+					      eliminado = true;
+					  }
+				  i++;  
+				}
+			}	
 		return eliminado;
 	}
 	
@@ -196,6 +216,9 @@ public class Sistema {
 		}
 		return uv;
 	}
+	
+	
+	
 	
 	
 	
@@ -247,25 +270,53 @@ public class Sistema {
 		return agregado;
 	}
 	
-	public boolean eliminarEmpleado(String dni) throws Exception
+	
+	
+	public boolean eliminarCajero(String dni) throws Exception
 	{
 		boolean eliminado=false;
 		int i=0;
-		while(i<lstEmpleados.size() && eliminado==false)
-	    {
-			  if(lstEmpleados.get(i).getDni().equals(dni))
-			  {
-			      lstEmpleados.remove(i);
-			      eliminado = true;
-			  }
-			  i++;     
-		}
-		if(eliminado==false)
+		if(buscarEmpleadoPorDni(dni)!=null)
 		{
-			throw new Exception("El empleado a eliminar no existe");
-		}
+			while(i<lstEmpleados.size() && eliminado==false)
+			{
+				  if(lstEmpleados.get(i) instanceof Cajero)
+				  {
+					  lstEmpleados.remove(i);
+				      eliminado = true;
+				  }
+			  i++;  
+			}
+		}	 
 		return eliminado;
 	}
+	
+	
+	public boolean eliminarCocinero(String dni) throws Exception
+	{
+		boolean eliminado=false;
+		int i=0;
+		if(buscarEmpleadoPorDni(dni)!=null)
+		{
+			while(i<lstEmpleados.size() && eliminado==false)
+			{
+			  if(lstEmpleados.get(i).getDni().equals(dni))
+			  {
+				  if(lstEmpleados.get(i) instanceof Cocinero)
+				  {
+					  lstEmpleados.remove(i);
+				      eliminado = true;
+				  }
+			  }
+			  i++;  
+			}
+		}	 
+		return eliminado;
+	}
+	
+	
+	
+	
 	
 	
 	public Empleado buscarEmpleadoPorDni(String dni) throws Exception
@@ -398,5 +449,55 @@ public class Sistema {
 	}
 
 	
+	
+	//CASO DE USO N°13: Unidades con Mayor Canon
+	//Dado un festival devuelve las 3 unidades que más gastaron en canon
+	//indicando nombre comercial, código, tipo de unidad y el canon.
+	//(usar clase ReporteMayoresCanon, no persiste).
+	
+	public List<ReporteMayoresCanon> UnidadeDeMayorCanon(String nombreFestival,LocalDate fechaInicio, LocalDate fechaFin) throws Exception
+	{
+		Festival f = buscarFestival(nombreFestival,fechaInicio,fechaFin);
+	    List<ReporteMayoresCanon> reportesEncontrados = new ArrayList<>(3);
+	    List<UnidadVenta> aux = new ArrayList<>(); aux.addAll(f.getUnidades()); // Asigna todas las Unidades
+
+	    while(reportesEncontrados.size() < 3 && aux.size() > 0)
+	    {
+	        UnidadVenta mayor = aux.get(0);
+
+	        int i=1; // arranca desde la segunda posición porque la primera (0) ya se guardó
+	        while(i<aux.size())
+	        {
+	            if(aux.get(i).calcularCanon() > mayor.calcularCanon())
+	            {
+	                mayor=aux.get(i);
+	            }
+
+	            i++;
+	        }
+
+	        String tipoUnidad;
+
+	        if(mayor instanceof FoodTruck)
+	        {
+	            tipoUnidad="FoodTruck";
+	        }
+	        else
+	        {
+	            tipoUnidad="PuestoDesarmable";
+	        }
+
+	        reportesEncontrados.add(
+	            new ReporteMayoresCanon(
+	                mayor.getNombreComercial(),
+	                mayor.getCodigo(),
+	                tipoUnidad,
+	                mayor.calcularCanon()
+	            )
+	        );
+	        aux.remove(mayor); //Se elimina para poder salir del bucle
+	    }
+	    return reportesEncontrados;
+	}
 	
 }
