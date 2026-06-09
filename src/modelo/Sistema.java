@@ -34,11 +34,10 @@ public class Sistema {
 	}
 	
 	//FESTIVAL
-	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin, List<Costo> costos) throws Exception
+	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin) throws Exception
 	{
-		if(buscarFestival(nombre)!=null)
-		{
-			throw new Exception("El festival ya esta ingresado");
+		if(festivalSolapaFecha(nombre, fechaInicio, fechaFin)) {
+			throw new Exception ("Error: no se puede agregar un festival que ya se está festejando");
 		}
 		
 		int id= lstFestivales.isEmpty()?1: lstFestivales.get(lstFestivales.size()-1).getId()+1;
@@ -70,24 +69,38 @@ public class Sistema {
 	
 	
 	
-	public Festival buscarFestival(String nombre)
+	public Festival buscarFestival(String nombre, LocalDate fechaInicio, LocalDate fechaFin) throws Exception
 	{
 		Festival f = null;
+		Festival buscado = new Festival(0,nombre,null,fechaInicio,fechaFin);
 		int i=0;
 		while(i<lstFestivales.size() && f==null)
 	    {
-			
-			if(lstFestivales.get(i).getNombre().equalsIgnoreCase(nombre))
+			if(this.lstFestivales.get(i).equals(buscado))
 			{	
 				f = lstFestivales.get(i);
-
 			}
 			i++;
 	    }
+		if(f==null)
+		{
+			throw new Exception("El festival ingresado no existe");
+		}
 		return f;
 	}
 
-	
+	// Método que verifica que un festival no se solape en fechas con otros (Festivales de mismo nombre únicamente)
+	private boolean festivalSolapaFecha(String nombre, LocalDate fechaInicio, LocalDate fechaFin) {
+		boolean solapa = false;
+		for(Festival f : this.getLstFestivales()) {
+			if(f.getNombre().equalsIgnoreCase(nombre)) {
+				if(!fechaFin.isBefore(fechaInicio) && !fechaInicio.isAfter(fechaFin)) {
+					solapa = true;
+				}
+			}
+		}
+		return solapa;
+	}
 	
 	//UNIDAD
 	public boolean agregarFoodTruck(String nombreComercial,	Empleado responsable, double superficie,String codigo,String patente,boolean requiereElectricidad) throws Exception {
@@ -138,7 +151,7 @@ public class Sistema {
 	
 	
 	
-	public boolean eliminarUnidadVenta(String codigo)
+	public boolean eliminarUnidadVenta(String codigo) throws Exception
 	{
 		boolean eliminado=false;
 		int i=0;
@@ -151,11 +164,16 @@ public class Sistema {
 			  }
 			  i++;    
 		}
+		
+		if(eliminado==false)
+		{
+			throw new Exception("La Unidad-Venta ingresada no existe");
+		}
 		return eliminado;
 	}
 	
 	
-	public UnidadVenta buscarUnidadPorCodigo(String codigo)
+	public UnidadVenta buscarUnidadPorCodigo(String codigo) throws Exception
 	{
 		UnidadVenta uv = null;
 		int i=0;
@@ -168,6 +186,12 @@ public class Sistema {
 			}
 			i++;
 	    }
+		
+		
+		if(uv==null)
+		{
+			throw new Exception("La Unidad-Venta buscada no existe");
+		}
 		return uv;
 	}
 	
@@ -221,7 +245,7 @@ public class Sistema {
 		return agregado;
 	}
 	
-	public boolean eliminarEmpleado(String dni)
+	public boolean eliminarEmpleado(String dni) throws Exception
 	{
 		boolean eliminado=false;
 		int i=0;
@@ -232,13 +256,17 @@ public class Sistema {
 			      lstEmpleados.remove(i);
 			      eliminado = true;
 			  }
-			  i++;    
+			  i++;     
+		}
+		if(eliminado==false)
+		{
+			throw new Exception("El empleado a eliminar no existe");
 		}
 		return eliminado;
 	}
 	
 	
-	public Empleado buscarEmpleadoPorDni(String dni)
+	public Empleado buscarEmpleadoPorDni(String dni) throws Exception
 	{
 		Empleado e = null;
 		int i=0;
@@ -249,17 +277,22 @@ public class Sistema {
 			{
 				e = lstEmpleados.get(i);
 			}
-			i++;
-			
+			i++;	
 	    }
+		
+		if(e==null)
+		{
+			throw new Exception("El empleado buscado no existe");
+		}
+		
 		return e;
 	}
-
 	
 	// CASO DE USO N°5: Registro de pedido validado:  Método para agregar un pedido que invoque 
 	// internamente al CU #2 para validar la existencia de la Unidad y el Festival. 
-	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival, List<ItemPedido> items) throws Exception{
-		Festival festival = buscarFestival(nombreFestival);
+	// PIDE FECHA INICIO Y FECHA FIN DE FESTIVAL
+	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival,LocalDate fechaInicio, LocalDate fechaFin, List<ItemPedido> items) throws Exception{
+		Festival festival = buscarFestival(nombreFestival,fechaInicio,fechaFin);
 		UnidadVenta unidad = buscarUnidadPorCodigo(codigoUnidad);
 		if(festival == null || unidad == null) {
 			throw new Exception("Error: unidadVenta o festival no encontrado.");
@@ -273,35 +306,30 @@ public class Sistema {
 		return unidad.getPedidos().add(new Pedido(id,fecha, festival, items));
 	}
 	
-
 	
 	
 	
-	
-	public List<ReporteVenta> reporteRecaudacion(Festival festival)
+	// CASO DE USO N°6: Reporte de Recaudación
+	// Dado un festival, retornar la lista de unidades y su recaudación total 
+	// (usar clase ReporteVenta, no persistente)
+	public List<ReporteVenta> reporteRecaudacion(String nombre, LocalDate fechaInicio, LocalDate fechaFin)throws Exception
 	{
 	    List<ReporteVenta> reporte = new ArrayList<>();
-
-	    for(UnidadVenta unidad : lstUnidadVenta)
-	    {
-	        double recaudacion =
-	                unidad.calcularRecaudacion(festival);
-
-	        if(recaudacion > 0)
-	        {
-	            reporte.add(
-	                new ReporteVenta(
-	                    unidad,
-	                    recaudacion));
-	        }
-	    }
-
+    	Festival festivalRecaudacion = buscarFestival(nombre,fechaInicio,fechaFin);
+		    for(UnidadVenta unidad : lstUnidadVenta)
+		    {
+		        double recaudacion =
+		                unidad.calcularRecaudacion(festivalRecaudacion);
+		        if(recaudacion > 0)
+		        {
+		            reporte.add(
+		                new ReporteVenta(
+		                    unidad,
+		                    recaudacion));
+		        }
+		    }
 	    return reporte;
 	}
-	
-	
-	
-	
 	
 	
 	public List<Empleado> filtrarEmpleadosPorEdad(LocalDate desde,LocalDate hasta)
@@ -324,54 +352,34 @@ public class Sistema {
 	}
 	
 	
-	public List<UnidadVenta> rankingUnidades(Festival festival)
+	public List<UnidadVenta> rankingUnidades(String nombre, LocalDate fechaInicio, LocalDate fechaFin) throws Exception
 	{
-		List<UnidadVenta> lstRankingUnidades = new ArrayList<UnidadVenta>();
+		List<UnidadVenta> lstRankingUnidades = new ArrayList<UnidadVenta>(this.lstUnidadVenta); // CREA LA LISTA Y COPIA LAS UNIDADVENTA DE LA LISTA DEL SISTEMA
+		Festival festival = buscarFestival(nombre,fechaInicio,fechaFin); // INSTANCIA EL FESTIVAL, NO HACE FALTA IF PORQUE SI NO LO ENCUENTA "BUSCARFESTIVAL" TIRA EXCEPTION
 		int i=0;
-		 while(i < lstUnidadVenta.size())
-		 {
-			 int j= i+1;
-			 while(j < lstUnidadVenta.size())
+	
+			while(i < lstUnidadVenta.size())
 			 {
-				 if(lstRankingUnidades.get(i).calcularRecaudacion(festival) 
-					 < 
-					lstRankingUnidades.get(j).calcularRecaudacion(festival))
+				 int j= i+1;
+				 while(j < lstUnidadVenta.size())
 				 {
-					 UnidadVenta aux = lstRankingUnidades.get(i);
-		             lstRankingUnidades.set(i, lstRankingUnidades.get(j));
-		             lstRankingUnidades.set(j, aux);
-				 } 
-				 j++;	 
+					 if(lstRankingUnidades.get(i).calcularRecaudacion(festival) 
+						 < 
+						lstRankingUnidades.get(j).calcularRecaudacion(festival))
+					 {
+						 UnidadVenta aux = lstRankingUnidades.get(i);
+			             lstRankingUnidades.set(i, lstRankingUnidades.get(j));
+			             lstRankingUnidades.set(j, aux);
+					 } 
+					 j++;	 
+				 }
+			     i++;
 			 }
-		     i++;
-		 }
+		
 		return lstRankingUnidades;
 	}
 	
-
-	/*
-	Auditoría de Personal del Festival:
-	Método que retorne la lista de todo el personal que trabajó en un festival específico. 
-	 
-	public List<Empleado> auditoriaPersonal(int festivalId)
-	{
-		List<Empleado> empleadosEncontrados = new ArrayList<Empleado>();
-		int i=0;
-		 while(i < lstEmpleados.size())
-		 {
-			if()
-			{
-					// comparación
-			}
-			
-			 i++;
-		 }
-		 return empleadosEncontrados;
-	}
-	/*
-	 * 
-	 */
-	 
+	
 	// FX PARA  QUE NO SE REPITA EL EMPLEADO EN LA LISTA 
 	private boolean existeEmpleado(List<Empleado> lista, Empleado empleado)
 	{
@@ -391,6 +399,10 @@ public class Sistema {
 
 	    return existe;
 	}
+	
+	
+
+	
 	
 	//CU12 - AUDITORIA PERSONAL DEL FESTIVAL 
 	public List<Empleado> auditoriaPersonal(Festival festival)
