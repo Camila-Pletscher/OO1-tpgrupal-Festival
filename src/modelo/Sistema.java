@@ -173,7 +173,7 @@ public class Sistema {
 	}
 	
 	
-	public UnidadVenta buscarUnidadPorCodigo(String codigo) throws Exception
+	public UnidadVenta buscarUnidadPorCodigo(String codigo) 
 	{
 		UnidadVenta uv = null;
 		int i=0;
@@ -188,10 +188,7 @@ public class Sistema {
 	    }
 		
 		
-		if(uv==null)
-		{
-			throw new Exception("La Unidad-Venta buscada no existe");
-		}
+
 		return uv;
 	}
 
@@ -266,24 +263,19 @@ public class Sistema {
 	}
 	
 	
-	public Empleado buscarEmpleadoPorDni(String dni) throws Exception
+	public Empleado buscarEmpleadoPorDni(String dni) 
 	{
 		Empleado e = null;
 		int i=0;
 		while(i<lstEmpleados.size() && e==null)
 		{
 
-			if(lstEmpleados.get(i).getDni().equals(dni))
+			if(lstEmpleados.get(i).getDni().equalsIgnoreCase(dni))
 			{
 				e = lstEmpleados.get(i);
 			}
 			i++;	
 	    }
-		
-		if(e==null)
-		{
-			throw new Exception("El empleado buscado no existe");
-		}
 		
 		return e;
 	}

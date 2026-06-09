@@ -158,8 +158,7 @@ public class Test {
 			        "Festival Gourmet",
 			        "Verano",
 			        LocalDate.of(2026, 1, 10),
-			        LocalDate.of(2026, 1, 15),
-			        null);
+			        LocalDate.of(2026, 1, 15));
 
 			// PLATOS
 			Plato hamburguesa =
