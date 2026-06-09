@@ -347,30 +347,7 @@ public class Sistema {
 		 }
 		return lstRankingUnidades;
 	}
-	
 
-	/*
-	Auditoría de Personal del Festival:
-	Método que retorne la lista de todo el personal que trabajó en un festival específico. 
-	 
-	public List<Empleado> auditoriaPersonal(int festivalId)
-	{
-		List<Empleado> empleadosEncontrados = new ArrayList<Empleado>();
-		int i=0;
-		 while(i < lstEmpleados.size())
-		 {
-			if()
-			{
-					// comparación
-			}
-			
-			 i++;
-		 }
-		 return empleadosEncontrados;
-	}
-	/*
-	 * 
-	 */
 	 
 	// FX PARA  QUE NO SE REPITA EL EMPLEADO EN LA LISTA 
 	private boolean existeEmpleado(List<Empleado> lista, Empleado empleado)
@@ -412,7 +389,66 @@ public class Sistema {
 	}
 	
 	/*Funciones pendientes
-	+auditoriaPersonal(festivalId:int): List<Empleado>
 	+top3UnidadesMayorCanon(festivalId:int): List<ReporteMayoresCanon
 	*/
+	
+	
+	public List<ReporteMayoresCanon> top3UnidadesMayorCanon(Festival festival)
+	{
+	    List<ReporteMayoresCanon> reporte = new ArrayList<ReporteMayoresCanon>();
+
+	    for(UnidadVenta unidad : festival.getUnidades())
+	    {
+	        String tipoUnidad;
+
+	        if(unidad instanceof FoodTruck)
+	        {
+	            tipoUnidad = "FoodTruck";
+	        }
+	        else
+	        {
+	            tipoUnidad = "PuestoDesarmable";
+	        }
+
+	        ReporteMayoresCanon r = new ReporteMayoresCanon(unidad.getNombreComercial(), unidad.getCodigo(), tipoUnidad, unidad.calcularCanon());
+
+	        reporte.add(r);
+	    }
+
+	    int i = 0;
+
+	    while(i < reporte.size())
+	    {
+	        int j = i + 1;
+
+	        while(j < reporte.size())
+	        {
+	            if(reporte.get(i).getCannon() < reporte.get(j).getCannon())
+	            {
+	                ReporteMayoresCanon aux = reporte.get(i);
+
+	                reporte.set(i, reporte.get(j));
+
+	                reporte.set(j, aux);
+	            }
+
+	            j++;
+	        }
+
+	        i++;
+	    }
+
+	    List<ReporteMayoresCanon> top3 = new ArrayList<ReporteMayoresCanon>();
+
+	    i = 0;
+
+	    while(i < reporte.size() && i < 3)
+	    {
+	        top3.add(reporte.get(i));
+
+	        i++;
+	    }
+
+	    return top3;
+	}
 }
