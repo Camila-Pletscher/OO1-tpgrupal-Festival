@@ -138,5 +138,32 @@ public abstract class UnidadVenta {
 		
 		return total;
 	}
+	
+	// CU11 - PLATO ESTRELLA
+	
+	public Plato platoEstrella(Festival festival) {
+		Plato platoEstrella = null;
+		int maxCantidad = 0;
+		for(Plato plato : this.platos) {
+			int cantidad = 0;
+			
+			for(Pedido p : this.pedidos) {
+				if(!p.getFecha().isBefore(festival.getFechaInicio())
+		           && !p.getFecha().isAfter(festival.getFechaFin())) { 
+					for(ItemPedido item : p.getItems()) {
+						if(item.getPlato().equals(plato)) {
+							cantidad += item.getCantidad();
+						}
+					}
+				}
+			}
+			if(cantidad > maxCantidad) {
+				maxCantidad = cantidad;
+				platoEstrella = plato;
+			}
+		}
+
+		return platoEstrella;
+	}
 
 }

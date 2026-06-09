@@ -34,11 +34,10 @@ public class Sistema {
 	}
 
 	//FESTIVAL
-	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin, List<Costo> costos) throws Exception
+	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin) throws Exception
 	{
-		if(buscarFestival(nombre)!=null)
-		{
-			throw new Exception("El festival ya esta ingresado");
+		if(festivalSolapaFecha(nombre, fechaInicio, fechaFin)) {
+			throw new Exception ("Error: no se puede agregar un festival que ya se está festejando");
 		}
 
 		int id= lstFestivales.isEmpty()?1: lstFestivales.get(lstFestivales.size()-1).getId()+1;
@@ -67,28 +66,42 @@ public class Sistema {
 
 		return eliminado;
 	}
-
-
-
-	public Festival buscarFestival(String nombre)
+	
+	
+	
+	public Festival buscarFestival(String nombre, LocalDate fechaInicio, LocalDate fechaFin) throws Exception
 	{
 		Festival f = null;
+		Festival buscado = new Festival(0,nombre,null,fechaInicio,fechaFin);
 		int i=0;
 		while(i<lstFestivales.size() && f==null)
-		{
-
-			if(lstFestivales.get(i).getNombre().equalsIgnoreCase(nombre))
+	    {
+			if(this.lstFestivales.get(i).equals(buscado))
 			{	
 				f = lstFestivales.get(i);
-
 			}
 			i++;
+	    }
+		if(f==null)
+		{
+			throw new Exception("El festival ingresado no existe");
 		}
 		return f;
 	}
 
-
-
+	// Método que verifica que un festival no se solape en fechas con otros (Festivales de mismo nombre únicamente)
+	private boolean festivalSolapaFecha(String nombre, LocalDate fechaInicio, LocalDate fechaFin) {
+		boolean solapa = false;
+		for(Festival f : this.getLstFestivales()) {
+			if(f.getNombre().equalsIgnoreCase(nombre)) {
+				if(!fechaFin.isBefore(fechaInicio) && !fechaInicio.isAfter(fechaFin)) {
+					solapa = true;
+				}
+			}
+		}
+		return solapa;
+	}
+	
 	//UNIDAD
 	public boolean agregarFoodTruck(String nombreComercial,	Empleado responsable, double superficie,String codigo,String patente,boolean requiereElectricidad) throws Exception {
 
@@ -135,10 +148,10 @@ public class Sistema {
 
 		return agregado;
 	}
-
-
-
-	public boolean eliminarUnidadVenta(String codigo)
+	
+	
+	
+	public boolean eliminarUnidadVenta(String codigo) throws Exception
 	{
 		boolean eliminado=false;
 		int i=0;
@@ -151,11 +164,16 @@ public class Sistema {
 			}
 			i++;    
 		}
+		
+		if(eliminado==false)
+		{
+			throw new Exception("La Unidad-Venta ingresada no existe");
+		}
 		return eliminado;
 	}
-
-
-	public UnidadVenta buscarUnidadPorCodigo(String codigo)
+	
+	
+	public UnidadVenta buscarUnidadPorCodigo(String codigo) throws Exception
 	{
 		UnidadVenta uv = null;
 		int i=0;
@@ -167,6 +185,12 @@ public class Sistema {
 				uv = lstUnidadVenta.get(i);
 			}
 			i++;
+	    }
+		
+		
+		if(uv==null)
+		{
+			throw new Exception("La Unidad-Venta buscada no existe");
 		}
 		return uv;
 	}
@@ -220,25 +244,29 @@ public class Sistema {
 
 		return agregado;
 	}
-
-	public boolean eliminarEmpleado(String dni)
+	
+	public boolean eliminarEmpleado(String dni) throws Exception
 	{
 		boolean eliminado=false;
 		int i=0;
 		while(i<lstEmpleados.size() && eliminado==false)
+	    {
+			  if(lstEmpleados.get(i).getDni().equals(dni))
+			  {
+			      lstEmpleados.remove(i);
+			      eliminado = true;
+			  }
+			  i++;     
+		}
+		if(eliminado==false)
 		{
-			if(lstEmpleados.get(i).getDni().equals(dni))
-			{
-				lstEmpleados.remove(i);
-				eliminado = true;
-			}
-			i++;    
+			throw new Exception("El empleado a eliminar no existe");
 		}
 		return eliminado;
 	}
-
-
-	public Empleado buscarEmpleadoPorDni(String dni)
+	
+	
+	public Empleado buscarEmpleadoPorDni(String dni) throws Exception
 	{
 		Empleado e = null;
 		int i=0;
@@ -249,17 +277,22 @@ public class Sistema {
 			{
 				e = lstEmpleados.get(i);
 			}
-			i++;
-
+			i++;	
+	    }
+		
+		if(e==null)
+		{
+			throw new Exception("El empleado buscado no existe");
 		}
+		
 		return e;
 	}
-
-
+	
 	// CASO DE USO N°5: Registro de pedido validado:  Método para agregar un pedido que invoque 
 	// internamente al CU #2 para validar la existencia de la Unidad y el Festival. 
-	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival, List<ItemPedido> items) throws Exception{
-		Festival festival = buscarFestival(nombreFestival);
+	// PIDE FECHA INICIO Y FECHA FIN DE FESTIVAL
+	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival,LocalDate fechaInicio, LocalDate fechaFin, List<ItemPedido> items) throws Exception{
+		Festival festival = buscarFestival(nombreFestival,fechaInicio,fechaFin);
 		UnidadVenta unidad = buscarUnidadPorCodigo(codigoUnidad);
 		if(festival == null || unidad == null) {
 			throw new Exception("Error: unidadVenta o festival no encontrado.");

@@ -52,7 +52,7 @@ public class Plato {
 	
 	public boolean equals(Plato plato)
 	{
-	    return this.nombre.equals(plato.getNombre());
+	    return this.nombre.equalsIgnoreCase(plato.getNombre());
 	}
 
 
