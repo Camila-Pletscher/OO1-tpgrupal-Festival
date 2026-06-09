@@ -56,6 +56,14 @@ public class Test {
 					"XYZ1234567",
 					2,
 					30);
+			
+			s.agregarFoodTruck(
+			        "Truck Empanadas",
+			        responsable,
+			        30,
+			        "DEF1234567",
+			        "AC456DE",
+			        false);
 
 			System.out.println("Cantidad unidades esperada: 2");
 			System.out.println("Cantidad unidades obtenida: "
@@ -226,7 +234,7 @@ public class Test {
 		}
 		
 		try {
-			System.out.println("\n======== CU12 AUDITORIA PERSONAL DEL FESTIVAL ========");
+			
 
 			// Crear festival
 			Festival festival = new Festival(
@@ -244,6 +252,7 @@ public class Test {
 			// Recuperar unidades ya creadas
 			UnidadVenta foodTruck = s.buscarUnidadPorCodigo("ABC1234567");
 			UnidadVenta puesto = s.buscarUnidadPorCodigo("XYZ1234567");
+			UnidadVenta foodTruck2 = s.buscarUnidadPorCodigo("DEF1234567");
 
 			// Agregar empleados a las unidades
 			foodTruck.getPersonal().add(cocinero);
@@ -255,6 +264,26 @@ public class Test {
 			// Asociar unidades al festival
 			festival.getUnidades().add(foodTruck);
 			festival.getUnidades().add(puesto);
+			festival.getUnidades().add(foodTruck2);
+			
+			System.out.println("\n======== CU10 RANKING DE UNIDADES ========");
+
+			List<UnidadVenta> ranking =
+			        s.rankingUnidades(festival);
+
+			for(UnidadVenta unidad : ranking)
+			{
+			    System.out.println(
+			            unidad.getNombreComercial()
+			            +
+			            " - Recaudación: "
+			            +
+			            unidad.calcularRecaudacion(festival));
+
+			
+			}
+			
+			System.out.println("\n======== CU12 AUDITORIA PERSONAL DEL FESTIVAL ========");
 
 			// Ejecutar CU12
 			List<Empleado> auditoria = s.auditoriaPersonal(festival);
@@ -268,13 +297,25 @@ public class Test {
 			{
 			    System.out.println(e);
 			}
+			
+			System.out.println("\n======== CU13 TOP 3 MAYOR CANON ========");
+
+			List<ReporteMayoresCanon> top3 =
+			        s.top3UnidadesMayorCanon(festival);
+
+			for(ReporteMayoresCanon reporte : top3)
+			{
+			    System.out.println(reporte);
+			}
+			
+			
 		} catch(Exception e) {
 
 			System.out.println("ERROR:");
 			System.out.println(e.getMessage());
 
-		} 
+		}
+		
+		
 
-	}
-
-}
+}}

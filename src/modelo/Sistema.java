@@ -7,12 +7,12 @@ import java.util.List;
 import modelo.Festival;
 
 public class Sistema {
-	
+
 	List<Festival> lstFestivales;
 	List<Empleado> lstEmpleados;
 	List<UnidadVenta> lstUnidadVenta;
-	
-	
+
+
 	public Sistema() {
 		super();
 		this.lstFestivales = new ArrayList<Festival>();
@@ -32,39 +32,39 @@ public class Sistema {
 	public List<UnidadVenta> getLstUnidadVenta() {
 		return lstUnidadVenta;
 	}
-	
+
 	//FESTIVAL
 	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin) throws Exception
 	{
 		if(festivalSolapaFecha(nombre, fechaInicio, fechaFin)) {
 			throw new Exception ("Error: no se puede agregar un festival que ya se está festejando");
 		}
-		
+
 		int id= lstFestivales.isEmpty()?1: lstFestivales.get(lstFestivales.size()-1).getId()+1;
 		Festival nuevo = new Festival(id,nombre,temporada,fechaInicio,fechaFin);
 		lstFestivales.add(nuevo);
 		return nuevo;
 	}
-	
-	
+
+
 	public boolean eliminarFestival(int id)
 	{
-	    boolean eliminado = false;
+		boolean eliminado = false;
 
-	    int i = 0;
+		int i = 0;
 
-	    while(i < lstFestivales.size() && !eliminado)
-	    {
-	        if(lstFestivales.get(i).getId() == id)
-	        {
-	            lstFestivales.remove(i);
-	            eliminado = true;
-	        }
+		while(i < lstFestivales.size() && !eliminado)
+		{
+			if(lstFestivales.get(i).getId() == id)
+			{
+				lstFestivales.remove(i);
+				eliminado = true;
+			}
 
-	        i++;
-	    }
+			i++;
+		}
 
-	    return eliminado;
+		return eliminado;
 	}
 	
 	
@@ -125,7 +125,7 @@ public class Sistema {
 
 		return agregado;
 	}
-	
+
 	public boolean agregarPuestoDesarmable(	String nombreComercial,	Empleado responsable,double superficie,	String codigo,int cantidadCarpas,	int tiempoMontaje) throws Exception {
 
 		boolean agregado = false;
@@ -156,13 +156,13 @@ public class Sistema {
 		boolean eliminado=false;
 		int i=0;
 		while(i<lstUnidadVenta.size() && eliminado==false)
-	    {
-			  if(lstUnidadVenta.get(i).getCodigo().equals(codigo))
-			  {
-			      lstUnidadVenta.remove(i);
-			      eliminado = true;
-			  }
-			  i++;    
+		{
+			if(lstUnidadVenta.get(i).getCodigo().equals(codigo))
+			{
+				lstUnidadVenta.remove(i);
+				eliminado = true;
+			}
+			i++;    
 		}
 		
 		if(eliminado==false)
@@ -178,8 +178,8 @@ public class Sistema {
 		UnidadVenta uv = null;
 		int i=0;
 		while(i<lstUnidadVenta.size() && uv==null)
-	    {
-			
+		{
+
 			if(lstUnidadVenta.get(i).getCodigo().equals(codigo))
 			{
 				uv = lstUnidadVenta.get(i);
@@ -194,9 +194,9 @@ public class Sistema {
 		}
 		return uv;
 	}
-	
-	
-	
+
+
+
 
 	//EMPLEADO
 	public boolean agregarCajero(String nombre,	String apellido,String dni,	LocalDate fechaNacimiento,LocalDate fechaIngreso,Turno turno) throws Exception {
@@ -221,7 +221,7 @@ public class Sistema {
 
 		return agregado;
 	}
-	
+
 	public boolean agregarCocinero(	String nombre,String apellido,String dni,LocalDate fechaNacimiento,	LocalDate fechaIngreso,	String especialidad,double plusCategoria) throws Exception {
 
 		boolean agregado = false;
@@ -229,7 +229,7 @@ public class Sistema {
 		if(buscarEmpleadoPorDni(dni) != null) {
 			throw new Exception("El empleado ya existe");
 		}
-		
+
 
 		int id;
 
@@ -271,8 +271,8 @@ public class Sistema {
 		Empleado e = null;
 		int i=0;
 		while(i<lstEmpleados.size() && e==null)
-	    {
-			
+		{
+
 			if(lstEmpleados.get(i).getDni().equals(dni))
 			{
 				e = lstEmpleados.get(i);
@@ -305,33 +305,38 @@ public class Sistema {
 		}
 		return unidad.getPedidos().add(new Pedido(id,fecha, festival, items));
 	}
-	
-	
-	
-	
-	// CASO DE USO N°6: Reporte de Recaudación
-	// Dado un festival, retornar la lista de unidades y su recaudación total 
-	// (usar clase ReporteVenta, no persistente)
-	public List<ReporteVenta> reporteRecaudacion(String nombre, LocalDate fechaInicio, LocalDate fechaFin)throws Exception
+
+
+
+
+
+
+	public List<ReporteVenta> reporteRecaudacion(Festival festival)
 	{
-	    List<ReporteVenta> reporte = new ArrayList<>();
-    	Festival festivalRecaudacion = buscarFestival(nombre,fechaInicio,fechaFin);
-		    for(UnidadVenta unidad : lstUnidadVenta)
-		    {
-		        double recaudacion =
-		                unidad.calcularRecaudacion(festivalRecaudacion);
-		        if(recaudacion > 0)
-		        {
-		            reporte.add(
-		                new ReporteVenta(
-		                    unidad,
-		                    recaudacion));
-		        }
-		    }
-	    return reporte;
+		List<ReporteVenta> reporte = new ArrayList<>();
+
+		for(UnidadVenta unidad : lstUnidadVenta)
+		{
+			double recaudacion =
+					unidad.calcularRecaudacion(festival);
+
+			if(recaudacion > 0)
+			{
+				reporte.add(
+						new ReporteVenta(
+								unidad,
+								recaudacion));
+			}
+		}
+
+		return reporte;
 	}
-	
-	
+
+
+
+
+
+
 	public List<Empleado> filtrarEmpleadosPorEdad(LocalDate desde,LocalDate hasta)
 	{
 		List<Empleado> empleadosEncontrados = new ArrayList<Empleado>();
@@ -339,10 +344,10 @@ public class Sistema {
 		while(i<lstEmpleados.size())
 		{
 			if(
-				(!lstEmpleados.get(i).getFechaNacimiento().isAfter(desde))
-				&& 
-				(!lstEmpleados.get(i).getFechaNacimiento().isBefore(hasta))
-				)
+					(!lstEmpleados.get(i).getFechaNacimiento().isAfter(desde))
+					&& 
+					(!lstEmpleados.get(i).getFechaNacimiento().isBefore(hasta))
+					)
 			{
 				empleadosEncontrados.add(lstEmpleados.get(i));
 			}
@@ -350,81 +355,142 @@ public class Sistema {
 		}
 		return empleadosEncontrados;
 	}
-	
-	
-	public List<UnidadVenta> rankingUnidades(String nombre, LocalDate fechaInicio, LocalDate fechaFin) throws Exception
+
+
+	//CU 10 - RANKING UNIDADES DE MAYOR A MENOS 
+	public List<UnidadVenta> rankingUnidades(Festival festival)
 	{
-		List<UnidadVenta> lstRankingUnidades = new ArrayList<UnidadVenta>(this.lstUnidadVenta); // CREA LA LISTA Y COPIA LAS UNIDADVENTA DE LA LISTA DEL SISTEMA
-		Festival festival = buscarFestival(nombre,fechaInicio,fechaFin); // INSTANCIA EL FESTIVAL, NO HACE FALTA IF PORQUE SI NO LO ENCUENTA "BUSCARFESTIVAL" TIRA EXCEPTION
-		int i=0;
-	
-			while(i < lstUnidadVenta.size())
-			 {
-				 int j= i+1;
-				 while(j < lstUnidadVenta.size())
-				 {
-					 if(lstRankingUnidades.get(i).calcularRecaudacion(festival) 
-						 < 
-						lstRankingUnidades.get(j).calcularRecaudacion(festival))
-					 {
-						 UnidadVenta aux = lstRankingUnidades.get(i);
-			             lstRankingUnidades.set(i, lstRankingUnidades.get(j));
-			             lstRankingUnidades.set(j, aux);
-					 } 
-					 j++;	 
-				 }
-			     i++;
-			 }
-		
+		List<UnidadVenta> lstRankingUnidades = new ArrayList<UnidadVenta>();
+
+		lstRankingUnidades.addAll(festival.getUnidades());
+
+		int i = 0;
+
+		while(i < lstRankingUnidades.size())
+		{
+			int j = i + 1;
+
+			while(j < lstRankingUnidades.size())
+			{
+				if(lstRankingUnidades.get(i).calcularRecaudacion(festival) < lstRankingUnidades.get(j).calcularRecaudacion(festival))
+				{
+					UnidadVenta aux = lstRankingUnidades.get(i);
+
+					lstRankingUnidades.set(i, lstRankingUnidades.get(j));
+
+					lstRankingUnidades.set(j, aux);
+				}
+
+				j++;
+			}
+
+			i++;
+		}
+
 		return lstRankingUnidades;
 	}
-	
-	
+
+
 	// FX PARA  QUE NO SE REPITA EL EMPLEADO EN LA LISTA 
 	private boolean existeEmpleado(List<Empleado> lista, Empleado empleado)
 	{
-	    boolean existe = false;
+		boolean existe = false;
 
-	    int i = 0;
+		int i = 0;
 
-	    while(i < lista.size() && !existe)
-	    {
-	        if(lista.get(i).equals(empleado))
-	        {
-	            existe = true;
-	        }
+		while(i < lista.size() && !existe)
+		{
+			if(lista.get(i).equals(empleado))
+			{
+				existe = true;
+			}
 
-	        i++;
-	    }
+			i++;
+		}
 
-	    return existe;
+		return existe;
 	}
-	
-	
 
-	
-	
 	//CU12 - AUDITORIA PERSONAL DEL FESTIVAL 
 	public List<Empleado> auditoriaPersonal(Festival festival)
 	{
-	    List<Empleado> empleadosEncontrados = new ArrayList<>();
+		List<Empleado> empleadosEncontrados = new ArrayList<>();
 
-	    for(UnidadVenta unidad : festival.getUnidades())
-	    {
-	        for(Empleado empleado : unidad.getPersonal())
-	        {
-	            if(!existeEmpleado(empleadosEncontrados, empleado))
-	            {
-	                empleadosEncontrados.add(empleado);
-	            }
-	        }
-	    }
+		for(UnidadVenta unidad : festival.getUnidades())
+		{
+			for(Empleado empleado : unidad.getPersonal())
+			{
+				if(!existeEmpleado(empleadosEncontrados, empleado))
+				{
+					empleadosEncontrados.add(empleado);
+				}
+			}
+		}
 
-	    return empleadosEncontrados;
+		return empleadosEncontrados;
 	}
-	
+
 	/*Funciones pendientes
-	+auditoriaPersonal(festivalId:int): List<Empleado>
 	+top3UnidadesMayorCanon(festivalId:int): List<ReporteMayoresCanon
-	*/
+	 */
+
+
+	public List<ReporteMayoresCanon> top3UnidadesMayorCanon(Festival festival)
+	{
+		List<ReporteMayoresCanon> reporte = new ArrayList<ReporteMayoresCanon>();
+
+		for(UnidadVenta unidad : festival.getUnidades())
+		{
+			String tipoUnidad;
+
+			if(unidad instanceof FoodTruck)
+			{
+				tipoUnidad = "FoodTruck";
+			}
+			else
+			{
+				tipoUnidad = "PuestoDesarmable";
+			}
+
+			ReporteMayoresCanon r = new ReporteMayoresCanon(unidad.getNombreComercial(), unidad.getCodigo(), tipoUnidad, unidad.calcularCanon());
+
+			reporte.add(r);
+		}
+
+		int i = 0;
+
+		while(i < reporte.size())
+		{
+			int j = i + 1;
+
+			while(j < reporte.size())
+			{
+				if(reporte.get(i).getCannon() < reporte.get(j).getCannon())
+				{
+					ReporteMayoresCanon aux = reporte.get(i);
+
+					reporte.set(i, reporte.get(j));
+
+					reporte.set(j, aux);
+				}
+
+				j++;
+			}
+
+			i++;
+		}
+
+		List<ReporteMayoresCanon> top3 = new ArrayList<ReporteMayoresCanon>();
+
+		i = 0;
+
+		while(i < reporte.size() && i < 3)
+		{
+			top3.add(reporte.get(i));
+
+			i++;
+		}
+
+		return top3;
+	}
 }
