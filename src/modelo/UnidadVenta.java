@@ -89,7 +89,7 @@ public abstract class UnidadVenta {
 	
 	@Override
 	public String toString() {
-		return "UnidadVenda: [Nombre Comercial: "+this.getNombreComercial()+
+		return "UnidadVenta: [Nombre Comercial: "+this.getNombreComercial()+
 				" | Responsable: "+ this.getResponsable().toString()+
 				" | Superficie: "+ this.getSuperficie()+
 				" | Codigo: "+ this.getCodigo()+
@@ -148,8 +148,7 @@ public abstract class UnidadVenta {
 			int cantidad = 0;
 			
 			for(Pedido p : this.pedidos) {
-				if(!p.getFecha().isBefore(festival.getFechaInicio())
-		           && !p.getFecha().isAfter(festival.getFechaFin())) { 
+				if(p.getFestival().equals(festival)) { 
 					for(ItemPedido item : p.getItems()) {
 						if(item.getPlato().equals(plato)) {
 							cantidad += item.getCantidad();

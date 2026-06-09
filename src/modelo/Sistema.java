@@ -283,8 +283,8 @@ public class Sistema {
 	// CASO DE USO N°5: Registro de pedido validado:  Método para agregar un pedido que invoque 
 	// internamente al CU #2 para validar la existencia de la Unidad y el Festival. 
 	// PIDE FECHA INICIO Y FECHA FIN DE FESTIVAL
-	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival,LocalDate fechaInicio, LocalDate fechaFin, List<ItemPedido> items) throws Exception{
-		Festival festival = buscarFestival(nombreFestival,fechaInicio,fechaFin);
+	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,Festival festival, List<ItemPedido> items) throws Exception{
+
 		UnidadVenta unidad = buscarUnidadPorCodigo(codigoUnidad);
 		if(festival == null || unidad == null) {
 			throw new Exception("Error: unidadVenta o festival no encontrado.");
