@@ -73,7 +73,9 @@ public class Festival {
 	
 	public boolean equals(Festival festival)
 	{
-		return festival.getId() == this.id;
+		return this.getNombre().equalsIgnoreCase(festival.getNombre()) && 
+				this.getFechaInicio().isEqual(festival.fechaInicio) && 
+				this.getFechaFin().isEqual(festival.getFechaFin());
 	}
 
 

@@ -32,11 +32,10 @@ public class Sistema {
 		return lstUnidadVenta;
 	}
 	
-	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin, List<Costo> costos) throws Exception
+	public Festival agregarFestival (String nombre, String temporada,LocalDate fechaInicio,LocalDate fechaFin) throws Exception
 	{
-		if(buscarFestival(nombre)!=null)
-		{
-			throw new Exception("El festival ya esta ingresado");
+		if(festivalSolapaFecha(nombre, fechaInicio, fechaFin)) {
+			throw new Exception ("Error: no se puede agregar el festival que ya se está festejando");
 		}
 		
 		int id= lstFestivales.isEmpty()?1: lstFestivales.get(lstFestivales.size()-1).getId()+1;
@@ -46,15 +45,15 @@ public class Sistema {
 	}
 	
 	
-	public boolean eliminarFestival(int id) throws Exception
+	public boolean eliminarFestival(String nombre, LocalDate fechaInicio, LocalDate fechaFin) throws Exception
 	{
 	    boolean eliminado = false;
-
+	    Festival festivalEliminar = new Festival(0,nombre,null,fechaInicio,fechaFin);
 	    int i = 0;
-
+	    
 	    while(i < lstFestivales.size() && !eliminado)
 	    {
-	        if(lstFestivales.get(i).getId() == id)
+	        if(lstFestivales.get(i).equals(festivalEliminar))
 	        {
 	            lstFestivales.remove(i);
 	            eliminado = true;
@@ -72,20 +71,19 @@ public class Sistema {
 	
 	
 	
-	public Festival buscarFestival(String nombre) throws Exception
+	public Festival buscarFestival(String nombre, LocalDate fechaInicio, LocalDate fechaFin) throws Exception
 	{
 		Festival f = null;
+		Festival buscado = new Festival(0,nombre,null,fechaInicio,fechaFin);
 		int i=0;
 		while(i<lstFestivales.size() && f==null)
 	    {
-			
-			if(lstFestivales.get(i).getNombre().equalsIgnoreCase(nombre))
+			if(this.lstFestivales.get(i).equals(buscado))
 			{	
 				f = lstFestivales.get(i);
 			}
 			i++;
 	    }
-		
 		if(f==null)
 		{
 			throw new Exception("El festival ingresado no existe");
@@ -93,7 +91,18 @@ public class Sistema {
 		return f;
 	}
 
-	
+	// Método que verifica que un festival no se solape en fechas con otros (Festivales de mismo nombre únicamente)
+	private boolean festivalSolapaFecha(String nombre, LocalDate fechaInicio, LocalDate fechaFin) {
+		boolean solapa = false;
+		for(Festival f : this.getLstFestivales()) {
+			if(f.getNombre().equalsIgnoreCase(nombre)) {
+				if(!fechaFin.isBefore(fechaInicio) && !fechaInicio.isAfter(fechaFin)) {
+					solapa = true;
+				}
+			}
+		}
+		return solapa;
+	}
 	
 	//UNIDAD
 	public boolean agregarFoodTruck(String nombreComercial,	Empleado responsable, double superficie,String codigo,String patente,boolean requiereElectricidad) throws Exception {
@@ -192,7 +201,7 @@ public class Sistema {
 	
 
 	//EMPLEADO
-	public boolean agregarCajero(String nombre,	String apellido,String dni,	LocalDate fechaNacimiento,LocalDate fechaIngreso,Turno turno) throws Exception {
+	public boolean agregarCajero(String nombre,	String apellido,String dni,	LocalDate fechaNacimiento,LocalDate fechaIngreso,Turno turno, Festival festival) throws Exception {
 
 		boolean agregado = false;
 
@@ -209,13 +218,13 @@ public class Sistema {
 		}
 
 		Cajero nuevo = new Cajero(id,nombre,apellido,dni,fechaNacimiento,fechaIngreso,turno);
-
+		festival.getEmpleados().add(nuevo);
 		agregado = lstEmpleados.add(nuevo);
 
 		return agregado;
 	}
 	
-	public boolean agregarCocinero(	String nombre,String apellido,String dni,LocalDate fechaNacimiento,	LocalDate fechaIngreso,	String especialidad,double plusCategoria) throws Exception {
+	public boolean agregarCocinero(	String nombre,String apellido,String dni,LocalDate fechaNacimiento,	LocalDate fechaIngreso,	String especialidad,double plusCategoria,Festival festival) throws Exception {
 
 		boolean agregado = false;
 
@@ -233,8 +242,8 @@ public class Sistema {
 		}
 
 		Cocinero nuevo = new Cocinero(id,nombre,apellido,dni,fechaNacimiento,fechaIngreso,especialidad,	plusCategoria);
+		festival.getEmpleados().add(nuevo);
 		agregado = lstEmpleados.add(nuevo);
-
 		return agregado;
 	}
 	
@@ -284,8 +293,9 @@ public class Sistema {
 	
 	// CASO DE USO N°5: Registro de pedido validado:  Método para agregar un pedido que invoque 
 	// internamente al CU #2 para validar la existencia de la Unidad y el Festival. 
-	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival, List<ItemPedido> items) throws Exception{
-		Festival festival = buscarFestival(nombreFestival);
+	// PIDE FECHA INICIO Y FECHA FIN DE FESTIVAL
+	public boolean agregarPedido(LocalDate fecha, String codigoUnidad,String nombreFestival,LocalDate fechaInicio, LocalDate fechaFin, List<ItemPedido> items) throws Exception{
+		Festival festival = buscarFestival(nombreFestival,fechaInicio,fechaFin);
 		UnidadVenta unidad = buscarUnidadPorCodigo(codigoUnidad);
 		if(festival == null || unidad == null) {
 			throw new Exception("Error: unidadVenta o festival no encontrado.");
@@ -306,26 +316,22 @@ public class Sistema {
 	// CASO DE USO N°6: Reporte de Recaudación
 	// Dado un festival, retornar la lista de unidades y su recaudación total 
 	// (usar clase ReporteVenta, no persistente)
-	public List<ReporteVenta> reporteRecaudacion(int festivalId)
+	public List<ReporteVenta> reporteRecaudacion(String nombre, LocalDate fechaInicio, LocalDate fechaFin)throws Exception
 	{
 	    List<ReporteVenta> reporte = new ArrayList<>();
-
-		// Acá tendría que usarse  if(buscarFestival(nombre)!=null) {} 
-	    
-	    for(UnidadVenta unidad : lstUnidadVenta)
-	    {
-	        double recaudacion =
-	                unidad.calcularRecaudacion(festivalId);
-
-	        if(recaudacion > 0)
-	        {
-	            reporte.add(
-	                new ReporteVenta(
-	                    unidad,
-	                    recaudacion));
-	        }
-	    }
-
+    	Festival festivalRecaudacion = buscarFestival(nombre,fechaInicio,fechaFin);
+		    for(UnidadVenta unidad : lstUnidadVenta)
+		    {
+		        double recaudacion =
+		                unidad.calcularRecaudacion(festivalRecaudacion);
+		        if(recaudacion > 0)
+		        {
+		            reporte.add(
+		                new ReporteVenta(
+		                    unidad,
+		                    recaudacion));
+		        }
+		    }
 	    return reporte;
 	}
 	
@@ -354,20 +360,20 @@ public class Sistema {
 	}
 	
 	
-	public List<UnidadVenta> rankingUnidades(int festivalId) throws Exception
+	public List<UnidadVenta> rankingUnidades(String nombre, LocalDate fechaInicio, LocalDate fechaFin) throws Exception
 	{
-		List<UnidadVenta> lstRankingUnidades = new ArrayList<UnidadVenta>();
+		List<UnidadVenta> lstRankingUnidades = new ArrayList<UnidadVenta>(this.lstUnidadVenta); // CREA LA LISTA Y COPIA LAS UNIDADVENTA DE LA LISTA DEL SISTEMA
+		Festival festival = buscarFestival(nombre,fechaInicio,fechaFin); // INSTANCIA EL FESTIVAL, NO HACE FALTA IF PORQUE SI NO LO ENCUENTA "BUSCARFESTIVAL" TIRA EXCEPTION
 		int i=0;
-		
-		// Acá tendría que usarse  if(buscarFestival(nombre)!=null) {} 
+	
 			while(i < lstUnidadVenta.size())
 			 {
 				 int j= i+1;
 				 while(j < lstUnidadVenta.size())
 				 {
-					 if(lstRankingUnidades.get(i).calcularRecaudacion(festivalId) 
+					 if(lstRankingUnidades.get(i).calcularRecaudacion(festival) 
 						 < 
-						lstRankingUnidades.get(j).calcularRecaudacion(festivalId))
+						lstRankingUnidades.get(j).calcularRecaudacion(festival))
 					 {
 						 UnidadVenta aux = lstRankingUnidades.get(i);
 			             lstRankingUnidades.set(i, lstRankingUnidades.get(j));
@@ -385,9 +391,9 @@ public class Sistema {
 	//CASO DE USO N°12: Auditoría de Personal del Festival:
 	//Método que retorne la lista de todo el personal que trabajó en un festival específico. 
 	 
-	public List<Empleado> auditoriaPersonal(String nombre) throws Exception 
+	public List<Empleado> auditoriaPersonal(String nombre,LocalDate fechaInicio,LocalDate fechaFin) throws Exception 
 	{
-		Festival f = buscarFestival(nombre);
+		Festival f = buscarFestival(nombre,fechaInicio,fechaFin);
 		return f.getEmpleados();
 	}
 
