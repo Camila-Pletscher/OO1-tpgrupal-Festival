@@ -94,7 +94,7 @@ public class Sistema {
 		boolean solapa = false;
 		for(Festival f : this.getLstFestivales()) {
 			if(f.getNombre().equalsIgnoreCase(nombre)) {
-				if(!fechaFin.isBefore(fechaInicio) && !fechaInicio.isAfter(fechaFin)) {
+				if(!fechaFin.isBefore(f.getFechaInicio()) && !fechaInicio.isAfter(f.getFechaFin())) {
 					solapa = true;
 				}
 			}
