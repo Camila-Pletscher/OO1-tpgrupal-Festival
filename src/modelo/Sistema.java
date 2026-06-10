@@ -69,7 +69,7 @@ public class Sistema {
 	
 	
 	
-	public Festival buscarFestival(String nombre, LocalDate fechaInicio, LocalDate fechaFin) throws Exception
+	public Festival buscarFestival(String nombre, LocalDate fechaInicio, LocalDate fechaFin) 
 	{
 		Festival f = null;
 		Festival buscado = new Festival(0,nombre,null,fechaInicio,fechaFin);
@@ -82,10 +82,7 @@ public class Sistema {
 			}
 			i++;
 	    }
-		if(f==null)
-		{
-			throw new Exception("El festival ingresado no existe");
-		}
+
 		return f;
 	}
 
