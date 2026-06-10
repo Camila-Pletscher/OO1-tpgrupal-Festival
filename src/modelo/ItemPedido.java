@@ -28,7 +28,7 @@ public class ItemPedido {
 
 	@Override
 	public String toString() {
-		return "ItemPedido [cantidad=" + cantidad +
+		return "\n ItemPedido [cantidad=" + cantidad +
 				", plato=" + plato + "]";
 	}
 

@@ -60,7 +60,11 @@ public class Pedido {
 	    return total;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Pedido [ Fecha = " + this.getFecha() + ", Festival = " + 
+		this.getFestival().getNombre() + ", Items= " + this.getItems().toString() + " ]";
+	}
 	
 	
 }

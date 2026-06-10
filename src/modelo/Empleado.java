@@ -73,7 +73,7 @@ public abstract class Empleado {
 		return "Empleado [id=" + id +
 				", nombre=" + nombre +
 				", apellido=" + apellido +		
-				", dni=" + dni + "]";
+				", dni=" + dni;
 	}
 
 

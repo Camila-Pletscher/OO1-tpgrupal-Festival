@@ -96,13 +96,14 @@ public abstract class UnidadVenta {
 				" | Personal: "+ this.getPersonal().toString()+
 				" | Platos: "+ this.getPlatos().toString();
 	}
-	public abstract double calcularCanon();
 	
 	public boolean equals(UnidadVenta unidad)
 	{
 	    return this.codigo.equals(unidad.getCodigo());
 	}
 
+	
+	public abstract double calcularCanon();
 	
 	// CASO DE USO N°8: Cálculo de rentabilidad neta: calcular la ganancia de una unidad
 	// (pedidos totales - costos de platos) y restar obligatoriamente los sueldos y el canon
