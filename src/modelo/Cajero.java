@@ -27,4 +27,10 @@ public class Cajero extends Empleado {
 	public double calcularSueldo() {
 		return Constantes.SUELDO_BASE +(calcularAntiguedad() * Constantes.PLUS_ANTIGUEDAD_POR_ANIO);
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + ", Turno= "+ this.getTurno() + "]";
+	}
+
 }

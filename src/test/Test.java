@@ -6,20 +6,17 @@ import java.util.List;
 
 import modelo.*;
 
-/**
- * 
- */
 public class Test {
 
 	public static void main(String[] args) {
 		Sistema s = new Sistema();
-
+		
 
 		try {
 
 			System.out.println("======== CU1 ALTAS ========");
 
-
+			
 			s.agregarCocinero(
 					"Juan",
 					"Perez",
@@ -59,14 +56,6 @@ public class Test {
 					"XYZ1234567",
 					2,
 					30);
-
-			s.agregarFoodTruck(
-					"Truck Empanadas",
-					responsable,
-					30,
-					"DEF1234567",
-					"AC456DE",
-					false);
 
 			System.out.println("Cantidad unidades esperada: 2");
 			System.out.println("Cantidad unidades obtenida: "
@@ -143,7 +132,7 @@ public class Test {
 					Constantes.SUELDO_BASE
 					+
 					(antiguedad *
-							Constantes.PLUS_ANTIGUEDAD_POR_ANIO);
+					 Constantes.PLUS_ANTIGUEDAD_POR_ANIO);
 
 			System.out.println("Antiguedad: "
 					+ antiguedad);
@@ -153,86 +142,75 @@ public class Test {
 
 			System.out.println("Sueldo obtenido: "
 					+ cajero.calcularSueldo());
+			
+			System.out.println("\n======== CU6 REPORTE RECAUDACION ========");
 
-			System.out.println("\n======== CU5 AGREGAR PEDIDO ========");
 			// FESTIVAL
 			Festival festival = s.agregarFestival(
-					"Festival Gourmet",
-					"Verano",
-					LocalDate.of(2026, 1, 10),
-					LocalDate.of(2026, 1, 15));
+			        "Festival Gourmet",
+			        "Verano",
+			        LocalDate.of(2026, 1, 10),
+			        LocalDate.of(2026, 1, 15));
 
 			// PLATOS
 			Plato hamburguesa =
-					new Plato(
-							1,
-							"Hamburguesa",
-							1000,
-							400);
+			        new Plato(
+			                1,
+			                "Hamburguesa",
+			                1000,
+			                400);
 
 			Plato papas =
-					new Plato(
-							2,
-							"Papas Fritas",
-							500,
-							150);
+			        new Plato(
+			                2,
+			                "Papas Fritas",
+			                500,
+			                150);
 
 			// ITEMS
 			ItemPedido item1 =
-					new ItemPedido(
-							2,
-							hamburguesa);
+			        new ItemPedido(
+			                2,
+			                hamburguesa);
 
 			ItemPedido item2 =
-					new ItemPedido(
-							3,
-							papas);
+			        new ItemPedido(
+			                3,
+			                papas);
 
 			List<ItemPedido> items =
-					new ArrayList<ItemPedido>();
+			        new ArrayList<ItemPedido>();
 
 			items.add(item1);
 			items.add(item2);
-
-			// PEDIDO
-			Pedido pedido =
-					new Pedido(
-							1,
-							LocalDate.now(),
-							festival,
-							items);
-
-			// LO AGREGAMOS AL FOODTRUCK
-			ft.getPedidos().add(pedido);
-
-			boolean agregado = s.agregarPedido(LocalDate.of(2025,1,15), "XYZ1234567", festival, items);
-			System.out.print(agregado);
-
-
-			System.out.println("\n======== CU6 REPORTE RECAUDACION ========");
-
-
+		
 
 			// PROBAMOS CALCULO DE RECAUDACION
 			System.out.println("\nRecaudacion esperada: 3500");
 			System.out.println("Recaudacion obtenida: "
-					+ ft.calcularRecaudacion(festival));
+			        + ft.calcularRecaudacion(festival));
 
 			// REPORTE
 			List<ReporteVenta> reporte =
-					s.reporteRecaudacion(festival);
+			        s.reporteRecaudacion(festival);
 
 			System.out.println("\nCantidad reportes esperada: 1");
 			System.out.println("Cantidad reportes obtenida: "
-					+ reporte.size());
+			        + reporte.size());
 
 			for(ReporteVenta r : reporte)
 			{
-				System.out.println(
-						r.getUnidad().getNombreComercial()
-						+ " -> "
-						+ r.getTotalRecaudado());
+			    System.out.println(
+			            r.getUnidad().getNombreComercial()
+			            + " -> "
+			            + r.getTotalRecaudado());
 			}
+			System.out.println("\n======== CU5 AGREGAR PEDIDO ========");
+			// PEDIDO : SE CREA Y AGREGA A FOODTRUCK || COMENTAR PARA PROBAR EXCEPTION
+			s.agregarPedido(LocalDate.of(2026, 2, 11), "ABC1234567", festival, items); // ESTE TIRA EXCEPTION
+			s.agregarPedido(LocalDate.of(2026, 2, 11), "ABC1234567", festival, items); // ESTE AGREGA BIEN
+			
+			
 
 		}
 		catch(Exception e) {
@@ -241,18 +219,18 @@ public class Test {
 			System.out.println(e.getMessage());
 
 		}
-
+		
 		try {
-
+			System.out.println("\n======== CU12 AUDITORIA PERSONAL DEL FESTIVAL ========");
 
 			// Crear festival
 			Festival festival = new Festival(
-					1,
-					"Festival Gourmet",
-					"Verano",
-					LocalDate.of(2025, 1, 10),
-					LocalDate.of(2025, 1, 15)
-					);
+			        1,
+			        "Festival Gourmet",
+			        "Verano",
+			        LocalDate.of(2025, 1, 10),
+			        LocalDate.of(2025, 1, 15)
+			);
 
 			// Recuperar empleados ya creados
 			Empleado cocinero = s.buscarEmpleadoPorDni("12345678");
@@ -261,7 +239,6 @@ public class Test {
 			// Recuperar unidades ya creadas
 			UnidadVenta foodTruck = s.buscarUnidadPorCodigo("ABC1234567");
 			UnidadVenta puesto = s.buscarUnidadPorCodigo("XYZ1234567");
-			UnidadVenta foodTruck2 = s.buscarUnidadPorCodigo("DEF1234567");
 
 			// Agregar empleados a las unidades
 			foodTruck.getPersonal().add(cocinero);
@@ -273,26 +250,6 @@ public class Test {
 			// Asociar unidades al festival
 			festival.getUnidades().add(foodTruck);
 			festival.getUnidades().add(puesto);
-			festival.getUnidades().add(foodTruck2);
-
-			System.out.println("\n======== CU10 RANKING DE UNIDADES ========");
-
-			List<UnidadVenta> ranking =
-					s.rankingUnidades(festival);
-
-			for(UnidadVenta unidad : ranking)
-			{
-				System.out.println(
-						unidad.getNombreComercial()
-						+
-						" - Recaudación: "
-						+
-						unidad.calcularRecaudacion(festival));
-
-
-			}
-
-			System.out.println("\n======== CU12 AUDITORIA PERSONAL DEL FESTIVAL ========");
 
 			// Ejecutar CU12
 			List<Empleado> auditoria = s.auditoriaPersonal(festival);
@@ -304,27 +261,15 @@ public class Test {
 
 			for(Empleado e : auditoria)
 			{
-				System.out.println(e);
+			    System.out.println(e);
 			}
-
-			System.out.println("\n======== CU13 TOP 3 MAYOR CANON ========");
-
-			List<ReporteMayoresCanon> top3 =
-					s.top3UnidadesMayorCanon(festival);
-
-			for(ReporteMayoresCanon reporte : top3)
-			{
-				System.out.println(reporte);
-			}
-
-
 		} catch(Exception e) {
 
 			System.out.println("ERROR:");
 			System.out.println(e.getMessage());
 
-		}
+		} 
 
+	}
 
-
-	}}
+}

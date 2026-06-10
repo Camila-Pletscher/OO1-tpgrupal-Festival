@@ -301,7 +301,7 @@ public class Sistema {
 
 
 
-
+	// CASO DE USO N°6
 
 	public List<ReporteVenta> reporteRecaudacion(Festival festival)
 	{
@@ -328,7 +328,7 @@ public class Sistema {
 
 
 
-
+	// CASO DE USO N°7
 	public List<Empleado> filtrarEmpleadosPorEdad(LocalDate desde,LocalDate hasta)
 	{
 		List<Empleado> empleadosEncontrados = new ArrayList<Empleado>();
@@ -422,10 +422,8 @@ public class Sistema {
 		return empleadosEncontrados;
 	}
 
-	/*Funciones pendientes
-	+top3UnidadesMayorCanon(festivalId:int): List<ReporteMayoresCanon
-	 */
-
+	
+	// CASO DE USO N°13
 
 	public List<ReporteMayoresCanon> top3UnidadesMayorCanon(Festival festival)
 	{

@@ -30,9 +30,13 @@ public class Cocinero extends Empleado {
 		return plusCategoria;
 	}
 
-	//@Override
+	@Override
 	public double calcularSueldo() {
 
 		return Constantes.SUELDO_BASE + plusCategoria;
+	}
+	@Override
+	public String toString() {
+		return super.toString() + ", Especialidad = " + this.getEspecialidad() + "]";
 	}
 }
