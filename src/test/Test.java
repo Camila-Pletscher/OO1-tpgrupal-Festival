@@ -54,6 +54,31 @@ public class Test {
 
 		}
 
+		try {
+
+			System.out.println("\n========== CU2 BUSQUEDAS ==========");
+
+			Empleado e = s.buscarEmpleadoPorDni("12345678");
+
+			System.out.println("Empleado encontrado: ");
+			System.out.println(e);
+
+		} catch (Exception e) {
+
+			System.out.println(e.getMessage());
+
+		}
+
+		System.out.println("\n========== CU2 NO ENCONTRADO ==========");
+
+		Empleado e = s.buscarEmpleadoPorDni("00000000");
+
+		if (e == null) {
+
+			System.out.println("Empleado inexistente OK");
+
+		}
+
 	}
 
 }
