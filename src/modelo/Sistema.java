@@ -299,22 +299,17 @@ public class Sistema {
 
 
 	// CASO DE USO N°6
-
 	public List<ReporteVenta> reporteRecaudacion(Festival festival)
 	{
 		List<ReporteVenta> reporte = new ArrayList<>();
 
 		for(UnidadVenta unidad : lstUnidadVenta)
 		{
-			double recaudacion =
-					unidad.calcularRecaudacion(festival);
+			double recaudacion = unidad.calcularRecaudacion(festival);
 
 			if(recaudacion > 0)
 			{
-				reporte.add(
-						new ReporteVenta(
-								unidad,
-								recaudacion));
+				reporte.add(new ReporteVenta(unidad,recaudacion));
 			}
 		}
 
