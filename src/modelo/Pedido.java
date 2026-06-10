@@ -12,8 +12,8 @@ public class Pedido {
 	
 	public Pedido(int id, LocalDate fecha,  Festival festival, List<ItemPedido> items) throws Exception {
 		this.setId(id);
+		this.festival = festival;
 		this.setFecha(fecha);
-	    this.festival = festival;
 		this.setItems(items);
 	}
 	
@@ -29,10 +29,10 @@ public class Pedido {
 	}
 	public void setFecha(LocalDate fecha) throws Exception {
 
-	   /* if(fecha.isBefore(this.festival.getFechaInicio()) || fecha.isEqual(this.festival.getFechaInicio()) || fecha.isAfter(this.festival.getFechaFin()) || fecha.isEqual(this.festival.getFechaFin()))
+	    if(fecha.isBefore(this.festival.getFechaInicio()) || fecha.isAfter(this.festival.getFechaFin()))
 	    {
 	        throw new Exception("La fecha del pedido debe estar comprendida entre " + this.festival.getFechaInicio() + " y " + this.festival.getFechaFin());
-	    }*/
+	    }
 
 	    this.fecha = fecha;
 	}
