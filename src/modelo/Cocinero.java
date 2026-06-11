@@ -37,6 +37,6 @@ public class Cocinero extends Empleado {
 	}
 	@Override
 	public String toString() {
-		return super.toString() + ", Especialidad = " + this.getEspecialidad() + "]";
+		return super.toString() + ", Especialidad = " + this.getEspecialidad() + "] ";
 	}
 }

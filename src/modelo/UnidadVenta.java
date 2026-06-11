@@ -89,12 +89,12 @@ public abstract class UnidadVenta {
 	
 	@Override
 	public String toString() {
-		return "UnidadVenta: [Nombre Comercial: "+this.getNombreComercial()+
-				" | Responsable: "+ this.getResponsable().toString()+
-				" | Superficie: "+ this.getSuperficie()+
-				" | Codigo: "+ this.getCodigo()+
-				" | Personal: "+ this.getPersonal().toString()+
-				" | Platos: "+ this.getPlatos().toString();
+		return "UnidadVenta: [Nombre Comercial: "+this.getNombreComercial()+ 
+				"\n  | Responsable: "+ this.getResponsable().toString()+
+				"\n  | Superficie: "+ this.getSuperficie()+
+				"\n  | Codigo: "+ this.getCodigo()+
+				"\n  | Personal: "+ this.getPersonal().toString()+
+				"\n  | Platos: "+ this.getPlatos().toString();
 	}
 	
 	public boolean equals(UnidadVenta unidad)
