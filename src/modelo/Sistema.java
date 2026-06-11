@@ -49,9 +49,7 @@ public class Sistema {
 	// que invoque
 	// internamente al CU #2 para validar la existencia de la Unidad y el Festival.
 	// PIDE FECHA INICIO Y FECHA FIN DE FESTIVAL
-	public boolean agregarPedido(LocalDate fecha, String codigoUnidad, String nombreFestival, LocalDate fechaInicioFestival, LocalDate fechaFinFestival, List<ItemPedido> items) throws Exception {
-
-		boolean agregado = false;
+	public Pedido agregarPedido(LocalDate fecha, String codigoUnidad, String nombreFestival, LocalDate fechaInicioFestival, LocalDate fechaFinFestival) throws Exception {
 
 		// CU2
 		UnidadVenta unidadEncontrada = buscarUnidadPorCodigo(codigoUnidad);
@@ -72,12 +70,14 @@ public class Sistema {
 			id = unidadEncontrada.getPedidos().get(unidadEncontrada.getPedidos().size() - 1).getId() + 1;
 		}
 
-		Pedido nuevo = new Pedido(id, fecha, festivalEncontrado, items);
+		Pedido nuevo = new Pedido(id, fecha, festivalEncontrado);
 
-		agregado = unidadEncontrada.getPedidos().add(nuevo);
+		unidadEncontrada.getPedidos().add(nuevo);
 
-		return agregado;
+		return nuevo;
 	}
+	
+	
 
 	public boolean eliminarFestival(int id) {
 		boolean eliminado = false;
@@ -209,7 +209,7 @@ public class Sistema {
 	// EMPLEADO
 	public boolean agregarCajero(String nombre, String apellido, String dni, LocalDate fechaNacimiento,
 			LocalDate fechaIngreso, Turno turno) throws Exception {
-
+		
 		boolean agregado = false;
 
 		if (buscarEmpleadoPorDni(dni) != null) {

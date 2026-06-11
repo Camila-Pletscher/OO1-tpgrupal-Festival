@@ -10,11 +10,11 @@ public class Pedido {
 	private List<ItemPedido> items;
 	
 	
-	public Pedido(int id, LocalDate fecha,  Festival festival, List<ItemPedido> items) throws Exception {
+	public Pedido(int id, LocalDate fecha,  Festival festival) throws Exception {
 		this.setId(id);
 		this.festival = festival;
 		this.setFecha(fecha);
-		this.setItems(items);
+		this.items = new ArrayList<ItemPedido>();
 	}
 	
 	
@@ -45,6 +45,11 @@ public class Pedido {
 	
 	public Festival getFestival() {
 	    return festival;
+	}
+	
+	public boolean agregarItem(Plato plato, int cantidad)
+	{
+	    return items.add(new ItemPedido(cantidad, plato));
 	}
 	
 	public double calcularTotal()

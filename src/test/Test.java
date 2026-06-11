@@ -1,7 +1,6 @@
 package test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import modelo.*;
@@ -46,6 +45,11 @@ public class Test {
 			s.agregarFoodTruck("Truck Tacos", maria, 30, "DEF1234567", "BB123CC", false);
 
 			s.agregarPuestoDesarmable("Puesto Helados", juan, 25, "HIJ1234567", 4, 20);
+			
+			s.agregarFoodTruck("Truck Sushi", pedro, 18, "STR1234567", "CC789DD", true);
+			s.agregarPuestoDesarmable("Puesto Crepes", maria, 22, "CRP1234567", 3, 25);
+			s.agregarFoodTruck("Truck Asado", juan, 35, "ASA1234567", "DD012EE", false);
+			s.agregarPuestoDesarmable("Puesto Vegano", pedro, 20, "VEG1234567", 2, 15);
 
 			// ====================================================
 			// RECUPERO UNIDADES
@@ -58,45 +62,58 @@ public class Test {
 			FoodTruck truckTacos = (FoodTruck) s.buscarUnidadPorCodigo("DEF1234567");
 
 			PuestoDesarmable puestoHelados = (PuestoDesarmable) s.buscarUnidadPorCodigo("HIJ1234567");
+			
+			FoodTruck truckSushi = (FoodTruck) s.buscarUnidadPorCodigo("STR1234567");
+			PuestoDesarmable puestoCrepes = (PuestoDesarmable) s.buscarUnidadPorCodigo("CRP1234567");
+			FoodTruck truckAsado = (FoodTruck) s.buscarUnidadPorCodigo("ASA1234567");
+			PuestoDesarmable puestoVegano = (PuestoDesarmable) s.buscarUnidadPorCodigo("VEG1234567");
 
 			// ====================================================
 			// PERSONAL DE CADA UNIDAD
 			// ====================================================
 
-			foodtruck.getPersonal().add(juan);
-			foodtruck.getPersonal().add(maria);
+			foodtruck.agregarEmpleado(juan);
+			foodtruck.agregarEmpleado(maria);
 
-			puesto.getPersonal().add(pedro);
+			puesto.agregarEmpleado(pedro);
 
-			truckTacos.getPersonal().add(maria);
+			truckTacos.agregarEmpleado(maria);
 
-			puestoHelados.getPersonal().add(juan);
-
-			// ====================================================
-			// PLATOS
-			// ====================================================
-
-			Plato hamburguesa = new Plato(1, "Hamburguesa", 15000, 7000);
-
-			Plato papas = new Plato(2, "Papas Fritas", 8000, 3000);
-
-			Plato pizza = new Plato(3, "Pizza", 12000, 5000);
-
-			Plato tacos = new Plato(4, "Tacos", 10000, 4000);
-
-			Plato nachos = new Plato(5, "Nachos", 7000, 2500);
+			puestoHelados.agregarEmpleado(juan);
+			
+			truckSushi.agregarEmpleado(pedro);
+			truckSushi.agregarEmpleado(maria);
+			puestoCrepes.agregarEmpleado(maria);
+			truckAsado.agregarEmpleado(juan);
+			puestoVegano.agregarEmpleado(pedro);
 
 			// ====================================================
 			// AGREGAR PLATOS A LAS UNIDADES
 			// ====================================================
+			
+			foodtruck.agregarPlato("Hamburguesa", 15000, 7000); 
+			foodtruck.agregarPlato("Papas Fritas", 8000, 3000); 
+			
+			puesto.agregarPlato("Tacos", 10000, 4000);
+			puesto.agregarPlato("Nachos", 7000, 2500); 
+			
+			truckTacos.agregarPlato("Pizza", 12000, 5000);
+			
+			puesto.agregarPlato("Empanadas", 6000, 2000);
+			truckTacos.agregarPlato("Burrito", 11000, 4500);
+			puestoHelados.agregarPlato("Helado de Chocolate", 5000, 1500);
+			puestoHelados.agregarPlato("Helado de Frutilla", 4500, 1500);
+			
+			truckSushi.agregarPlato("Roll California", 16000, 7000);
+			truckSushi.agregarPlato("Sashimi", 20000, 9000);
+			puestoCrepes.agregarPlato("Crepe Dulce", 8000, 3000);
+			puestoCrepes.agregarPlato("Crepe Salado", 9000, 3500);
+			
+			truckAsado.agregarPlato("Choripan", 7000, 2500);
+			truckAsado.agregarPlato("Asado", 25000, 10000);
+			puestoVegano.agregarPlato("Wrap Vegano", 10000, 4000);
+			puestoVegano.agregarPlato("Burger Vegana", 12000, 5000);
 
-			foodtruck.getPlatos().add(hamburguesa);
-			foodtruck.getPlatos().add(papas);
-
-			puesto.getPlatos().add(pizza);
-
-			truckTacos.getPlatos().add(tacos);
-			truckTacos.getPlatos().add(nachos);
 
 			// ====================================================
 			// FESTIVAL - CU 1
@@ -107,6 +124,8 @@ public class Test {
 
 			Festival festivalRock = s.agregarFestival("Cosquin Rock", "Invierno", LocalDate.of(2025, 7, 10),
 					LocalDate.of(2025, 7, 12));
+			
+			
 
 			// ====================================================
 			// UNIDADES DEL FESTIVAL
@@ -117,76 +136,67 @@ public class Test {
 
 			festivalRock.getUnidades().add(foodtruck);
 			festivalRock.getUnidades().add(truckTacos);
+			
+			festival.getUnidades().add(truckSushi);
+			festival.getUnidades().add(puestoCrepes);
+
+			festivalRock.getUnidades().add(truckAsado);
+			festivalRock.getUnidades().add(puestoVegano);
 
 			// ====================================================
 			// PEDIDOS
 			// ====================================================
-
-			// ITEMS
-			ItemPedido item1 = new ItemPedido(2, hamburguesa);
-
-			ItemPedido item2 = new ItemPedido(3, papas);
-
-			List<ItemPedido> items = new ArrayList<ItemPedido>();
-
-			items.add(item1);
-			items.add(item2);
+			
 
 			// PEDIDO
-			s.agregarPedido(LocalDate.of(2025, 3, 22), "ABC1234567", "Lollapalooza", LocalDate.of(2025, 3, 21),
-					LocalDate.of(2025, 3, 23), items);
+			Pedido pedido1 = s.agregarPedido(LocalDate.of(2025, 3, 22), foodtruck.getCodigo(), "Lollapalooza", LocalDate.of(2025, 3, 21),LocalDate.of(2025, 3, 23));			
+			pedido1.agregarItem(foodtruck.buscarPlato("Hamburguesa"), 2);
+			pedido1.agregarItem(foodtruck.buscarPlato("Papas Fritas"), 2);
+			
+			Pedido pedido2 = s.agregarPedido(LocalDate.of(2025, 3, 21), puesto.getCodigo(), "Lollapalooza", LocalDate.of(2025, 3, 21), LocalDate.of(2025, 3, 23));
+			pedido2.agregarItem(puesto.buscarPlato("Empanadas"), 4);
+			pedido2.agregarItem(puesto.buscarPlato("Nachos"), 3);
 
-			List<ItemPedido> items2 = new ArrayList<ItemPedido>();
+			Pedido pedido3 = s.agregarPedido(LocalDate.of(2025, 3, 23), foodtruck.getCodigo(), "Lollapalooza", LocalDate.of(2025, 3, 21), LocalDate.of(2025, 3, 23));
+			pedido3.agregarItem(foodtruck.buscarPlato("Hamburguesa"), 4);
+			pedido3.agregarItem(foodtruck.buscarPlato("Papas Fritas"), 2);
 
-			items2.add(new ItemPedido(4, hamburguesa));
-			items2.add(new ItemPedido(2, papas));
+			// PEDIDOS COSQUIN ROCK
+			Pedido pedido4 = s.agregarPedido(LocalDate.of(2025, 7, 10), foodtruck.getCodigo(), "Cosquin Rock", LocalDate.of(2025, 7, 10), LocalDate.of(2025, 7, 12));
+			pedido4.agregarItem(foodtruck.buscarPlato("Hamburguesa"), 5);
+			pedido4.agregarItem(foodtruck.buscarPlato("Papas Fritas"), 3);
 
-			s.agregarPedido(LocalDate.of(2025, 3, 23), "ABC1234567", "Lollapalooza", LocalDate.of(2025, 3, 21),
-					LocalDate.of(2025, 3, 23), items2);
+			Pedido pedido5 = s.agregarPedido(LocalDate.of(2025, 7, 11), truckTacos.getCodigo(), "Cosquin Rock", LocalDate.of(2025, 7, 10), LocalDate.of(2025, 7, 12));
+			pedido5.agregarItem(truckTacos.buscarPlato("Burrito"), 6);
+			pedido5.agregarItem(truckTacos.buscarPlato("Pizza"), 3);
 
-			List<ItemPedido> items3 = new ArrayList<ItemPedido>();
+			Pedido pedido6 = s.agregarPedido(LocalDate.of(2025, 7, 12), foodtruck.getCodigo(), "Cosquin Rock", LocalDate.of(2025, 7, 10), LocalDate.of(2025, 7, 12));
+			pedido6.agregarItem(foodtruck.buscarPlato("Hamburguesa"), 2);
+			
+			Pedido pedido7 = s.agregarPedido(LocalDate.of(2025, 3, 21), truckSushi.getCodigo(), "Lollapalooza", LocalDate.of(2025, 3, 21), LocalDate.of(2025, 3, 23));
+			pedido7.agregarItem(truckSushi.buscarPlato("Roll California"), 3);
+			pedido7.agregarItem(truckSushi.buscarPlato("Sashimi"), 2);
 
-			items3.add(new ItemPedido(5, pizza));
+			Pedido pedido8 = s.agregarPedido(LocalDate.of(2025, 3, 22), puestoCrepes.getCodigo(), "Lollapalooza", LocalDate.of(2025, 3, 21), LocalDate.of(2025, 3, 23));
+			pedido8.agregarItem(puestoCrepes.buscarPlato("Crepe Dulce"), 4);
+			pedido8.agregarItem(puestoCrepes.buscarPlato("Crepe Salado"), 2);
 
-			s.agregarPedido(LocalDate.of(2025, 3, 21), "XYZ1234567", "Lollapalooza", LocalDate.of(2025, 3, 21),
-					LocalDate.of(2025, 3, 23), items3);
+			Pedido pedido9 = s.agregarPedido(LocalDate.of(2025, 3, 23), truckSushi.getCodigo(), "Lollapalooza", LocalDate.of(2025, 3, 21), LocalDate.of(2025, 3, 23));
+			pedido9.agregarItem(truckSushi.buscarPlato("Roll California"), 5);
 
-			List<ItemPedido> items4 = new ArrayList<ItemPedido>();
+			// PEDIDOS COSQUIN ROCK
+			Pedido pedido10 = s.agregarPedido(LocalDate.of(2025, 7, 10), truckAsado.getCodigo(), "Cosquin Rock", LocalDate.of(2025, 7, 10), LocalDate.of(2025, 7, 12));
+			pedido10.agregarItem(truckAsado.buscarPlato("Choripan"), 6);
+			pedido10.agregarItem(truckAsado.buscarPlato("Asado"), 3);
 
-			items4.add(new ItemPedido(8, pizza));
+			Pedido pedido11 = s.agregarPedido(LocalDate.of(2025, 7, 11), puestoVegano.getCodigo(), "Cosquin Rock", LocalDate.of(2025, 7, 10), LocalDate.of(2025, 7, 12));
+			pedido11.agregarItem(puestoVegano.buscarPlato("Wrap Vegano"), 4);
+			pedido11.agregarItem(puestoVegano.buscarPlato("Burger Vegana"), 3);
 
-			s.agregarPedido(LocalDate.of(2025, 3, 22), "XYZ1234567", "Lollapalooza", LocalDate.of(2025, 3, 21),
-					LocalDate.of(2025, 3, 23), items4);
-
-			List<ItemPedido> items5 = new ArrayList<ItemPedido>();
-
-			items5.add(new ItemPedido(6, tacos));
-			items5.add(new ItemPedido(3, nachos));
-
-			s.agregarPedido(LocalDate.of(2025, 7, 10), "DEF1234567", "Cosquin Rock", LocalDate.of(2025, 7, 10),
-					LocalDate.of(2025, 7, 12), items5);
-
-			List<ItemPedido> items6 = new ArrayList<ItemPedido>();
-
-			items6.add(new ItemPedido(10, tacos));
-
-			s.agregarPedido(LocalDate.of(2025, 7, 11), "DEF1234567", "Cosquin Rock", LocalDate.of(2025, 7, 10),
-					LocalDate.of(2025, 7, 12), items6);
-
-			Plato helado = new Plato(6, "Helado", 5000, 1500);
-
-			Plato brownie = new Plato(7, "Brownie", 4000, 1000);
-
-			puestoHelados.getPlatos().add(helado);
-			puestoHelados.getPlatos().add(brownie);
-
-			List<ItemPedido> items7 = new ArrayList<ItemPedido>();
-
-			items7.add(new ItemPedido(12, helado));
-			items7.add(new ItemPedido(5, brownie));
-
-			s.agregarPedido(LocalDate.of(2025, 3, 22), "HIJ1234567", "Lollapalooza", LocalDate.of(2025, 3, 21),
-					LocalDate.of(2025, 3, 23), items7);
+			Pedido pedido12 = s.agregarPedido(LocalDate.of(2025, 7, 12), truckAsado.getCodigo(), "Cosquin Rock", LocalDate.of(2025, 7, 10), LocalDate.of(2025, 7, 12));
+			pedido12.agregarItem(truckAsado.buscarPlato("Asado"), 5);
+			pedido12.agregarItem(truckAsado.buscarPlato("Choripan"), 2);
+			
 
 		} catch (Exception e) {
 
@@ -279,11 +289,9 @@ public class Test {
 		try {
 
 			System.out.println("\n===== CU5 ERROR FECHA =====");
+			
+			s.agregarPedido(LocalDate.of(2025, 5, 10), "ABC1234567", "Lollapalooza", LocalDate.of(2025, 3, 21), LocalDate.of(2025, 3, 23));			
 
-			List<ItemPedido> items = new ArrayList<ItemPedido>();
-
-			s.agregarPedido(LocalDate.of(2025, 5, 10), "ABC1234567", "Lollapalooza", LocalDate.of(2025, 3, 21),
-					LocalDate.of(2025, 3, 23), items);
 
 		} catch (Exception e) {
 

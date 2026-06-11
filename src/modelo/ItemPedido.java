@@ -6,8 +6,8 @@ public class ItemPedido {
 	private Plato plato;
 
 	public ItemPedido(int cantidad, Plato plato) {
-		this.cantidad = cantidad;
 		this.plato = plato;
+		this.cantidad = cantidad;
 	}
 
 	public int getCantidad() {
